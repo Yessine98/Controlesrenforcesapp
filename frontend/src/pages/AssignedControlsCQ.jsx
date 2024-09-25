@@ -1,0 +1,51 @@
+import React from 'react';
+import { Card, Col, Row, Button } from 'react-bootstrap';
+import useAssignedControls from '../hooks/useAssignedControls';
+import axios from 'axios';
+
+const AssignedControls = () => {
+  const { assignedControls, loading, error, setAssignedControls } = useAssignedControls();
+
+  const handleExecute = async (requestId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      await axios.put(`http://localhost:8080/api/cq/control-requests/${requestId}/execute`, {}, {
+        headers: {
+          'x-access-token': token,
+        },
+      });
+
+      // Filter out the executed request from the list
+      setAssignedControls(prev => prev.filter(req => req.id !== requestId));
+    } catch (err) {
+      console.error('Error updating status:', err);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <Row>
+      {assignedControls.map(request => (
+        <Col key={request.id} md={4} className="mb-4">
+          <Card>
+            <Card.Body>
+              <Card.Title>{request.produit}</Card.Title>
+              <Card.Text>
+                <strong>Lot:</strong> {request.lot} <br />
+                <strong>Motif:</strong> {request.motifControle} <br />
+                <strong>Control to perform:</strong> {request.controleAFaire} <br />
+                <strong>Execution Deadline:</strong> {new Date(request.delaiExecution).toLocaleDateString()} <br />
+                <strong>Status:</strong> {request.status}
+              </Card.Text>
+              <Button variant="primary" onClick={() => handleExecute(request.id)}>Execute</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      ))}
+    </Row>
+  );
+};
+
+export default AssignedControls;

@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "adminadmin",
+    "database": "quality_control_app",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "test": {
+    "username": "postgres",
+    "password": "adminadmin",
+    "database": "quality_control_app_test",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "production": {
+    "username": "postgres",
+    "password": "adminadmin",
+    "database": "quality_control_app_production",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  }
+}
