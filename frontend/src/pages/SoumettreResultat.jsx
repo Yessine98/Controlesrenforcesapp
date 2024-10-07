@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Card, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import useInProgressControls from '../hooks/useInProgressControls'; // Custom hook
 
+
+
 const SoumettreResultat = () => {
-  const { inProgressControls, loading, error } = useInProgressControls();
+  const { inProgressControls, setInProgressControls, loading, error } = useInProgressControls();
   const [showModal, setShowModal] = useState(false);
   const [selectedControl, setSelectedControl] = useState(null);
   const [resultData, setResultData] = useState({
@@ -24,11 +26,13 @@ const SoumettreResultat = () => {
     preleveur: '',
     controleur: '',
     commentaires: '',
-    conformite: 'conforme',
+    conformite: '',
     visa: '',
+    dateTransmission:''
   });
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -52,7 +56,10 @@ const SoumettreResultat = () => {
       commentaires: '',
       conformite: 'conforme',
       visa: '',
+      dateTransmission:''
     });
+    setSubmitSuccess(false); // Reset success message
+    setSubmitError(''); // Reset error message
   };
 
   const handleShowModal = (control) => {
@@ -81,6 +88,7 @@ const SoumettreResultat = () => {
         commentaires: '',
         conformite: 'conforme',
         visa: '',
+        dateTransmission:''
       });
     }
   }, [selectedControl]);
@@ -115,6 +123,9 @@ const SoumettreResultat = () => {
       );
       setSubmitSuccess(true);
       setSubmitError('');
+      setInProgressControls((prevControls) =>
+        prevControls.filter((control) => control.id !== selectedControl.id)
+      );
       handleCloseModal();
     } catch (err) {
       setSubmitError(
@@ -129,21 +140,43 @@ const SoumettreResultat = () => {
   return (
     <Container style={{ marginTop: '20px' }}>
       <h2>Soumettre un Résultat</h2>
-      {inProgressControls.map((control) => (
-        <Card key={control.id} className="mb-3">
-          <Card.Body>
-            <Card.Title>{control.produit}</Card.Title>
-            <Card.Text>
-              <strong>ID:</strong> {control.id} <br />
-              <strong>Status:</strong> {control.status} <br />
-            </Card.Text>
-            <Button variant="primary" onClick={() => handleShowModal(control)}>
-              Soumettre
-            </Button>
-          </Card.Body>
-        </Card>
-      ))}
+      <hr />
+  
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-danger">{error}</p>
+      ) : inProgressControls.length === 0 ? (
+        <p>Aucun contrôle en cours à soumettre.</p> // Message when no controls are available
+      ) : (
+        <Row>
+          {inProgressControls.map((control) => (
+            <Col key={control.id} xs={12} md={6} lg={4} className="mb-3">
+              <Card>
+                <Card.Body>
+                  <Card.Title>{control.produit}</Card.Title>
+                  <Card.Text>
+                    <strong>Numero:</strong> {control.numero} <br />
+                    <strong>Code:</strong> {control.code} <br />
+                    <strong>Lot:</strong> {control.lot} <br />
+                    <strong>Contrôles Demandés:</strong> {control.controleAFaire} <br />
+                    <strong>Secteur:</strong> {control.secteur} <br />
+                    <strong>Execution Deadline:</strong> {new Date (control.delaiExecution).toLocaleDateString()} <br />
+                  </Card.Text>
+                  <Button
+                    style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} 
+                    onClick={() => handleShowModal(control)}
+                  >
+                    Soumettre
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      )}
 
+      {/* Modal for submitting the result */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Soumettre un Résultat</Modal.Title>
@@ -204,7 +237,7 @@ const SoumettreResultat = () => {
                 onChange={handleChange}
                 required
               >
-                <option value="">Sélectionnez le secteur</option>
+                
                 <option value="validation">Validation</option>
                 <option value="routine">Routine</option>
               </Form.Control>
@@ -254,47 +287,25 @@ const SoumettreResultat = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="numeroSeau">
-              <Form.Label>Numéro Seau</Form.Label>
-              <Form.Control
-                type="text"
-                name="numeroSeau"
-                value={resultData.numeroSeau}
-                onChange={handleChange}
-                placeholder="Numéro Seau (optional)"
-              />
-            </Form.Group>
-
-            <Form.Group controlId="tempsPrelevement">
-              <Form.Label>Temps de Prélèvement (en minutes)</Form.Label>
-              <Form.Control
-                type="number"
-                name="tempsPrelevement"
-                value={resultData.tempsPrelevement}
-                onChange={handleChange}
-                placeholder="Temps de Prélèvement (optional)"
-              />
-            </Form.Group>
-
-            <Form.Group controlId="tempsControleHeures">
-              <Form.Label>Temps de Contrôle (en heures)</Form.Label>
-              <Form.Control
-                type="number"
-                name="tempsControleHeures"
-                value={resultData.tempsControleHeures}
-                onChange={handleChange}
-                placeholder="Temps de Contrôle (optional)"
-              />
-            </Form.Group>
-
             <Form.Group controlId="eventNumber">
-              <Form.Label>Numéro d'Événement</Form.Label>
+              <Form.Label>N° EVENT </Form.Label>
               <Form.Control
                 type="text"
                 name="eventNumber"
                 value={resultData.eventNumber}
                 onChange={handleChange}
                 placeholder="Numéro d'Événement (optional)"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="numeroSeau">
+              <Form.Label>N° Seau Barils-Caisse</Form.Label>
+              <Form.Control
+                type="text"
+                name="numeroSeau"
+                value={resultData.numeroSeau}
+                onChange={handleChange}
+                placeholder="Numéro Seau (optional)"
               />
             </Form.Group>
 
@@ -310,6 +321,17 @@ const SoumettreResultat = () => {
               />
             </Form.Group>
 
+            <Form.Group controlId="tempsPrelevement">
+              <Form.Label>Temps de Prélèvement</Form.Label>
+              <Form.Control
+                type="number"
+                name="tempsPrelevement"
+                value={resultData.tempsPrelevement}
+                onChange={handleChange}
+                placeholder="Temps de Prélèvement (optional)"
+              />
+            </Form.Group>
+
             <Form.Group controlId="controleur">
               <Form.Label>Contrôleur</Form.Label>
               <Form.Control
@@ -322,15 +344,14 @@ const SoumettreResultat = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="commentaires">
-              <Form.Label>Commentaires</Form.Label>
+            <Form.Group controlId="tempsControleHeures">
+              <Form.Label>Temps de Contrôle (en heures)</Form.Label>
               <Form.Control
-                as="textarea"
-                rows={3}
-                name="commentaires"
-                value={resultData.commentaires}
+                type="number"
+                name="tempsControleHeures"
+                value={resultData.tempsControleHeures}
                 onChange={handleChange}
-                placeholder="Commentaires (optional)"
+                placeholder="Temps de Contrôle (optional)"
               />
             </Form.Group>
 
@@ -348,6 +369,19 @@ const SoumettreResultat = () => {
               </Form.Control>
             </Form.Group>
 
+            <Form.Group controlId="commentaires">
+              <Form.Label>Commentaires</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="commentaires"
+                value={resultData.commentaires}
+                onChange={handleChange}
+                placeholder="Commentaires (optional)"
+              />
+            </Form.Group>
+
+
             <Form.Group controlId="visa">
               <Form.Label>Visa</Form.Label>
               <Form.Control
@@ -359,12 +393,26 @@ const SoumettreResultat = () => {
               />
             </Form.Group>
 
+            <Form.Group controlId="dateTransmission">
+              <Form.Label>Date de transmission</Form.Label>
+              <Form.Control
+                type="date"
+                name="dateTransmission"
+                value={resultData.dateTransmission}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+            <hr />
+
             {submitError && <p className="text-danger">{submitError}</p>}
             {submitSuccess && <p className="text-success">Result submitted successfully!</p>}
 
-            <Button variant="primary" type="submit">
-              Soumettre
-            </Button>
+            <div className="d-flex justify-content-center">
+               <Button style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} type="submit">
+                 Soumettre
+                 </Button>
+                 </div>
           </Form>
         </Modal.Body>
       </Modal>

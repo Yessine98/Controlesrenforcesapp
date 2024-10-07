@@ -40,14 +40,14 @@ const CqSidebar = () => {
       <Col 
         className="sidebar" 
         style={{ 
-          background: 'linear-gradient(to right, #F7EFE6, #F7EFE6)', 
-          padding: '1rem', 
-          boxShadow: '2px 0 4px rgba(0, 0, 0, 0.1)',
-          height: '100vh', // Ensure full viewport height
-          overflowY: 'auto', // Add scrolling if content overflows
-          position: 'sticky',
-          top: '60px' // Adjust this value to match the height of your navbar
-        }}
+        background: 'linear-gradient(to right, #F7EFE6, #F7EFE6)', 
+        padding: '1rem', 
+        boxShadow: '2px 0 4px rgba(0, 0, 0, 0.1)',
+        height: '100vh', // Full viewport height
+        overflowY: 'auto', // Enable scrolling if content overflows
+        position: 'sticky',
+        top: '60px', // Adjust based on your navbar height
+      }}
       >
         <Nav className="flex-column gap-4">
           <Nav.Link 

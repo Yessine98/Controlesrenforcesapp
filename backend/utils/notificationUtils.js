@@ -4,16 +4,22 @@ const Notification = db.notification;
 
 const createNotification = async ({ recipientId, type, message, controlId }) => {
     try {
-        await Notification.create({
-            recipientId,
-            type,
-            message,
-            controlId,
-            createdAt: new Date(),
+        console.log("Creating notification for recipientId:", recipientId);
+        const notification = await Notification.create({
+          recipientId,
+          type,
+          message,
+          controlId,
+          read: false,
         });
-    } catch (error) {
-        console.error("Error creating notification:", error.message);
-    }
+        
+        console.log("Notification created:", notification);
+    
+        return notification;
+      } catch (error) {
+        console.error("Error creating notification:", error);
+        return undefined;
+      }
 };
 
 // Function to create notifications for all CQ users associated with a control request

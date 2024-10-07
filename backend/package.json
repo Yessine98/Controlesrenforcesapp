@@ -5,7 +5,8 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node index.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start-all": "concurrently \"pg_ctl start\" \"npm run dev\""
   },
   "keywords": [],
   "author": "",
@@ -18,9 +19,11 @@
     "express": "^4.20.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "socket.io": "^4.8.0"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.4",
     "prettier": "3.3.3",
     "sequelize-cli": "^6.6.2"

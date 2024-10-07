@@ -12,6 +12,7 @@ const PendingControlsAQ = () => {
   return (
     <Container>
       <h2 className="my-4">Pending Control Requests</h2>
+      <hr />
       <Row>
       {controlRequests.map((request) => (
         <Col md={4} key={request.id} className="mb-4">

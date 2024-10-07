@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Spinner, Button, Modal, Form } from 'react-bootstrap';
+import { Card, Spinner, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 const ResultsPage = () => {
@@ -75,26 +75,31 @@ const ResultsPage = () => {
   }
 
   if (error) {
-    return <p >{error}</p>;
+    return <p>{error}</p>;
   }
 
   return (
     <div>
       <h2>Results from CQ</h2>
+      <hr />
       {results.length === 0 ? (
         <p>No results found.</p>
       ) : (
-        results.map((request) => (
-          <Card key={request.id} className="mb-3">
-            <Card.Body>
-              <h5>Control Request ID: {request.controlRequest.id}</h5>
-              <p><strong>Produit:</strong> {request.controlRequest.produit}</p>
-              <p><strong>Lot:</strong> {request.lot}</p>
-              <p><strong>Conformité:</strong> {request.conformite}</p>
-              <Button style={{backgroundColor: 'green'}} onClick={() => handleShow(request)}>Decision</Button>
-            </Card.Body>
-          </Card>
-        ))
+        <Row>
+          {results.map((request) => (
+            <Col xs={12} md={6} lg={4} key={request.id} className="mb-3">
+              <Card>
+                <Card.Body>
+                  <h5><strong>Numero: </strong>{request.controlRequest.numero}</h5>
+                  <p><strong>Produit:</strong> {request.controlRequest.produit}</p>
+                  <p><strong>Lot:</strong> {request.lot}</p>
+                  <p><strong>Conformité:</strong> {request.conformite}</p>
+                  <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} onClick={() => handleShow(request)}>Decision</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       )}
 
       {/* Modal for decision */}
@@ -106,24 +111,25 @@ const ResultsPage = () => {
           {selectedRequest && (
             <>
               <h5>Control Request Details</h5>
-              <p><strong>Code:</strong> {selectedRequest.code}</p>
-              <p><strong>Lot:</strong> {selectedRequest.lot}</p>
-              <p><strong>Contrôles Demandés:</strong> {selectedRequest.controlesDemandes}</p>
-              <p><strong>Date de Contrôle:</strong> {new Date(selectedRequest.dateControle).toLocaleDateString()}</p>
               <p><strong>Numéro:</strong> {selectedRequest.numero}</p>
+              <p><strong>Code:</strong> {selectedRequest.code}</p>
               <p><strong>Désignation:</strong> {selectedRequest.designation}</p>
+              <p><strong>Lot:</strong> {selectedRequest.lot}</p>
               <p><strong>Secteur:</strong> {selectedRequest.secteur}</p>
+              <p><strong>Contrôles Demandés:</strong> {selectedRequest.controlesDemandes}</p>
               <p><strong>Date de Prélèvement:</strong> {new Date(selectedRequest.datePrelevement).toLocaleDateString()}</p>
+              <p><strong>Date de Contrôle:</strong> {new Date(selectedRequest.dateControle).toLocaleDateString()}</p>
               <p><strong>Anomalie:</strong> {selectedRequest.anomalie || 'No anomaly'}</p>
-              <p><strong>Numéro Seau:</strong> {selectedRequest.numeroSeau || 'No number'}</p>
-              <p><strong>Temps Prélèvement:</strong> {selectedRequest.tempsPrelevement || 'No time'}</p>
-              <p><strong>Temps Contrôle (Heures):</strong> {selectedRequest.tempsControleHeures || 'No time'}</p>
-              <p><strong>Event Number:</strong> {selectedRequest.eventNumber || 'No event number'}</p>
+              <p><strong>N° EVENT :</strong> {selectedRequest.eventNumber || 'No event number'}</p>
+              <p><strong>N° Seau Barils-Caisse:</strong> {selectedRequest.numeroSeau || 'No number'}</p>
               <p><strong>Préleveur:</strong> {selectedRequest.preleveur || 'No preleveur'}</p>
+              <p><strong>Temps Prélèvement:</strong> {selectedRequest.tempsPrelevement || 'No time'}</p>
               <p><strong>Contrôleur:</strong> {selectedRequest.controleur || 'No controleur'}</p>
-              <p><strong>Commentaires:</strong> {selectedRequest.commentaires || 'No comments'}</p>
+              <p><strong>Temps Contrôle (Heures):</strong> {selectedRequest.tempsControleHeures || 'No time'}</p>
               <p><strong>Conformité:</strong> {selectedRequest.conformite}</p>
+              <p><strong>Commentaires:</strong> {selectedRequest.commentaires || 'No comments'}</p>
               <p><strong>Visa:</strong> {selectedRequest.visa || 'No visa'}</p>
+              <p><strong>Date de transmission</strong>{new Date(selectedRequest.dateTransmission).toLocaleDateString()}</p>
 
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="dateDecision">
@@ -146,7 +152,7 @@ const ResultsPage = () => {
                   />
                 </Form.Group>
                 <Form.Group controlId="decision">
-                  <Form.Label st>Decision</Form.Label>
+                  <Form.Label>Decision</Form.Label>
                   <Form.Control
                     as="select"
                     value={decisionAQ}
@@ -159,7 +165,10 @@ const ResultsPage = () => {
                   </Form.Control>
                 </Form.Group>
                 <hr/>
-                <Button variant="primary" type="submit">Submit Decision</Button>
+                <div className="d-flex justify-content-center">
+                <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} type="submit">Submit Decision</Button>
+                </div>
+               
               </Form>
             </>
           )}

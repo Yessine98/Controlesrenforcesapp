@@ -10,7 +10,8 @@ export const useLogout = () => {
     setIsLoading(true);
     setError(null);
 
-    localStorage.removeItem('user');
+    localStorage.clear();
+    
     dispatch({ type: 'LOGOUT' });
 
     setIsLoading(false);

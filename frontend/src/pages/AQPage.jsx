@@ -8,15 +8,14 @@ import PendingControlsAQ from './PendingControlsAQ';
 import ResultsPage from './ResultsPage';
 import Archive from './Archive';
 
-
 const AQPage = () => {
   return (
-    <Container fluid style={{ paddingTop: '112px' }}> 
-      <Row>
-        <Col md={2} style={{ padding: '0', backgroundColor: '#f8f9fa', height: '100vh' }}>
+    <Container fluid style={{ paddingTop: '112px', height: '100vh' }}> 
+      <Row style={{ height: '100%' }}>
+        <Col md={2} style={{ padding: '0', backgroundColor: '#f8f9fa' }}>
           <AqSidebar />
         </Col>
-        <Col md={10} className="main-content p-4">
+        <Col md={10} className="main-content p-4" style={{ overflowY: 'auto', height: '100vh' }}>
           <Routes>
             <Route path="home" element={<HomeAQ />} />
             <Route path="pending-controls" element={<PendingControlsAQ />} />

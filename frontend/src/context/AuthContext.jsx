@@ -31,6 +31,7 @@ export const AuthContextProvider = ({ children }) => {
     } else {
       localStorage.removeItem('user');
     }
+    console.log('Current user:', state.user);
   }, [state.user]);
 
   return (

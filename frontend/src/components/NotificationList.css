@@ -1,0 +1,17 @@
+/* LoggedInNavbar.css */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #FF78D2;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.notification-item.unread {
+    background-color: #F7EEE6; 
+    border-left: 5px solid #263F26; 
+}

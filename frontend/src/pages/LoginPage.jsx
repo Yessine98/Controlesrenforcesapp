@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { MDBBtn, MDBContainer, MDBCard, MDBCardBody, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/gradients.css';  
 import useLogin from '../hooks/useLogin'; 
 import { useAuthContext } from '../hooks/useAuthContext';
+import { io } from 'socket.io-client';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const Login = () => {
   const { login, loading } = useLogin();
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
+  const socket = io('http://localhost:8080');
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -20,12 +22,22 @@ const Login = () => {
       const credentials = { email, password };
       const user = await login(credentials);
       dispatch({ type: 'LOGIN', payload: user });
+      socket.emit('registerUser', user.id);
+      console.log('User logged in:', user);
       navigate(user.role === 'AQ' ? '/aq/home' : '/cq/home');
     } catch (err) {
       console.error(err);
       setLoginError('Email or password is incorrect.'); // Set the error message
     }
   };
+
+  useEffect(() => {
+    socket.connect(); // Ensure the socket connection is established
+
+    return () => {
+        socket.disconnect(); // Cleanup on unmount
+    };
+}, []);
 
   return (
     <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image pt-5' style={{ backgroundImage: 'url(https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp)', minHeight: '100vh' }}>

@@ -52,7 +52,7 @@ const HomeAQ = () => {
             <Button 
     style={{ 
         marginTop: '1rem', 
-        backgroundColor: '#263F26', 
+        background: 'linear-gradient(to right,#263F26,#9EAA9E)', 
         color: 'white',  // Adjust text color to ensure readability
         border: 'none' // Optional: remove border if needed
     }} 
@@ -177,10 +177,11 @@ const HomeAQ = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button style={{background:'linear-gradient(to right,#9EAA9E,#263F26)'}} onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleSubmit}>
+                    <Button 
+                    style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} onClick={handleSubmit}>
                         Save Changes
                     </Button>
                 </Modal.Footer>

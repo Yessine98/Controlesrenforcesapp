@@ -1,14 +1,16 @@
 const db = require('../models');
 const { createNotification, notifyCQUsers } = require('../utils/notificationUtils');
 const { Op } = require('sequelize');
+const { getOnlineUsers, getSocketInstance } = require('../socket');
+
+
 
 const ControlRequest = db.controlRequest;
 const ControlResult = db.controlResult;
-
-//Fetch CQ users
-// controllers/aqController.js
 const User = db.user;
 
+
+//Fetch CQ users
 exports.getCQUsers = async (req, res) => {
   try {
     const cqUsers = await User.findAll({ where: { role: 'CQ' } });
@@ -20,55 +22,83 @@ exports.getCQUsers = async (req, res) => {
 
 
 // Create a new control request
-
 exports.createControleRequest = async (req, res) => {
   try {
-    // Generate the numero in the format CR-24
-    const year = new Date().getFullYear();
-    const month = String(new Date().getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const dayOfYear = Math.ceil((new Date() - new Date(year, 0, 0)) / 86400000); // Calculate the day of the year
-    const numero = `CR-${dayOfYear}-${month}`;
+      const year = new Date().getFullYear();
+      const month = String(new Date().getMonth() + 1).padStart(2, '0');
+      const dayOfYear = Math.ceil((new Date() - new Date(year, 0, 0)) / 86400000);
+      const numero = `CR-${dayOfYear}-${month}`;
 
-
-    const controlRequest = await ControlRequest.create({
-      numero:req.body.numero, 
-      code:req.body.code,   
-      produit: req.body.produit,
-      lot: req.body.lot,
-      motifControle: req.body.motifControle,
-      controleAFaire: req.body.controleAFaire,
-      delaiExecution: req.body.delaiExecution,
-      secteur:req.body.secteur,
-      status: 'pending',
-      requesterId: req.userId,
-    });
-
-    // Assign CQ users to the control request
-    if (req.body.assignedCQUserIds) {
-      await controlRequest.addAssignedCQUsers(req.body.assignedCQUserIds);
-    }
-
-    // Notify CQ users about the new control request
-    const cqUsers = await controlRequest.getAssignedCQUsers();
-    for (const user of cqUsers) {
-      await createNotification({
-        recipientId: user.id,
-        type: 'control_assigned',
-        message: `New control request assigned for ${controlRequest.produit}.`,
-        controlId: controlRequest.id,
+      // Create control request
+      const controlRequest = await ControlRequest.create({
+          numero,
+          code: req.body.code,
+          produit: req.body.produit,
+          lot: req.body.lot,
+          motifControle: req.body.motifControle,
+          controleAFaire: req.body.controleAFaire,
+          delaiExecution: req.body.delaiExecution,
+          secteur: req.body.secteur,
+          status: 'pending',
+          requesterId: req.userId,
       });
-    }
-    
-    res.status(201).send(controlRequest);
+
+      // Assign CQ users if provided
+      if (req.body.assignedCQUserIds) {
+          await controlRequest.addAssignedCQUsers(req.body.assignedCQUserIds);
+      }
+
+      // Get the assigned CQ users
+      const cqUsers = await controlRequest.getAssignedCQUsers();
+      console.log("Assigned CQ Users:", cqUsers);
+
+      const io = getSocketInstance(); // Get socket instance
+      const onlineUsers = getOnlineUsers(); // Get online users
+      const notifications = [];
+
+      for (const user of cqUsers) {
+          // Create notification for each CQ user
+          const notification = await createNotification({
+              recipientId: user.id,
+              type: 'control_assigned',
+              message: `New control request assigned for ${controlRequest.produit}.`,
+              controlId: controlRequest.id,
+          });
+
+          // Emit notification via socket
+          if (notification) {
+              console.log("Created notification:", notification.dataValues);
+              notifications.push(notification.dataValues);
+
+              if (onlineUsers[user.id]) {
+                  console.log(`Emitting notification to ${user.id}`);
+                  io.to(onlineUsers[user.id]).emit('newNotification', {
+                      ...notification.dataValues, // Send full notification data
+                      createdAt: new Date(),
+                      read: false, // Assuming the notification is unread initially
+                  });
+              } else {
+                  console.warn(`User ID ${user.id} not found in onlineUsers. Notification not sent.`);
+              }
+          } else {
+              console.error("Created notification is undefined.");
+          }
+      }
+
+      res.status(201).send({ controlRequest, notifications });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+      console.error('Error creating control request:', error);
+      res.status(500).send({ message: error.message });
   }
 };
 
 
 
 
-    
+
+
+
+
 
 // Get all pending control requests
 exports.getPendingControlRequests = async (req, res) => {

@@ -59,6 +59,7 @@ const ArchivePage = () => {
   return (
     <div>
       <h2>Archive of Results</h2>
+      <hr />
       {archivedResults.length === 0 ? (
         <Alert variant="info">No archived results found.</Alert>
       ) : (
@@ -73,7 +74,9 @@ const ArchivePage = () => {
                   <p><strong>Produit:</strong> {result.controlRequest.produit}</p>
                   <p><strong>Conformité:</strong> {result.conformite}</p>
                   <p><strong>Decision AQ:</strong> {result.decisionAQ}</p>
-                  <p><strong>Date de Décision:</strong>{result.dateDecision}</p>
+                  <p><strong>Commentaires AQ:</strong> {result.commentairesAQ || 'No comments'}</p>
+                  <p><strong>Date of Decision:</strong> {new Date(result.dateDecision).toLocaleDateString()}</p>
+                  
 
                   {/* Toggle button to expand/collapse */}
                   <Button
@@ -89,16 +92,23 @@ const ArchivePage = () => {
                   <Collapse in={expandedCard === result.id}>
                     <div id={`collapse-${result.id}`}>
                       <hr />
+                      <p><strong>Numero:</strong>{result.numero}</p>
+                      <p><strong>Code:</strong>{result.code}</p>
                       <p><strong>Lot:</strong> {result.lot}</p>
-                      <p><strong>Designation:</strong> {result.controlRequest.designation}</p>
-                      <p><strong>Motif Controle:</strong> {result.controlRequest.motifControle}</p>
-                      <p><strong>Date of Decision:</strong> {new Date(result.dateDecision).toLocaleDateString()}</p>
-                      <p><strong>Commentaires AQ:</strong> {result.commentairesAQ || 'No comments'}</p>
-                      <p><strong>Temps Prelevement:</strong> {result.tempsPrelevement} minutes</p>
-                      <p><strong>Temps Controle:</strong> {result.tempsControleHeures} hours</p>
+                      <p><strong>Secteur:</strong>{result.controlRequest.secteur}</p>
+                      <p><strong>Controles demandes:</strong>{result.controlRequest.controleAFaire}</p>
+                      <p><strong>Date de Prelevement:</strong> {new Date(result.datePrelevement).toLocaleDateString()}</p>
+                      <p><strong>Date de Controle:</strong> {new Date(result.dateControle).toLocaleDateString()}</p>
                       <p><strong>Anomalie:</strong> {result.anomalie || 'None'}</p>
-                      <p><strong>Visa:</strong> {result.visa || 'Not available'}</p>
+                      <p><strong>N° Event: </strong>{result.eventNumber}</p>
+                      <p><strong>N° Seau Barils-Caisse: </strong>{result.numeroSeau}</p>
+                      <p><strong>Péleveur: </strong>{result.preleveur}</p>
+                      <p><strong>Temps de Prelevement:</strong> {result.tempsPrelevement}</p>
                       <p><strong>Controleur:</strong> {result.controleur || 'N/A'}</p>
+                      <p><strong>Temps de Controle:</strong> {result.tempsControleHeures} heures</p>
+                      <p><strong>Commentaires: </strong>{result.commentaires}</p>
+                      <p><strong>Visa:</strong> {result.visa || 'Not available'}</p>
+                      <p><strong>Date de transmission: </strong>{new Date(result.dateTransmission).toLocaleDateString()}</p>
                     </div>
                   </Collapse>
                 </Card.Body>

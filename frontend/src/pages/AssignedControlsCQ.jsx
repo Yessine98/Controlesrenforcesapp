@@ -25,6 +25,10 @@ const AssignedControls = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  if (!assignedControls || assignedControls.length === 0) {
+    return <p>No controls have been assigned yet.</p>;
+  }
+
   return (
     <Row>
       {assignedControls.map(request => (
@@ -39,7 +43,7 @@ const AssignedControls = () => {
                 <strong>Execution Deadline:</strong> {new Date(request.delaiExecution).toLocaleDateString()} <br />
                 <strong>Status:</strong> {request.status}
               </Card.Text>
-              <Button variant="primary" onClick={() => handleExecute(request.id)}>Execute</Button>
+              <Button style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} onClick={() => handleExecute(request.id)}>Execute</Button>
             </Card.Body>
           </Card>
         </Col>
