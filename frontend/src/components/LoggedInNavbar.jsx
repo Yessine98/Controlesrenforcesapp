@@ -104,7 +104,7 @@ const LoggedInNavbar = ({ notifications, setNotifications, unreadCount, setUnrea
                             )}
                         </Nav.Link>
                         <NavDropdown title={`${user.username} (${user.role})`} id="basic-nav-dropdown">
-                        <NavDropdown.Item as={Link} to={user.role === 'AQ' ? "/aq/profile" : "/cq/profile"}><CgProfile />
+                        <NavDropdown.Item as={Link} to={user.role === 'AQ' ? "/aq/profile": user.role==='CQ'? "/cq/profile":"manager/profile"}><CgProfile />
                             Profile</NavDropdown.Item>
                             <NavDropdown.Item onClick={handleLogout}><GoSignOut/>Logout</NavDropdown.Item>
                         </NavDropdown>

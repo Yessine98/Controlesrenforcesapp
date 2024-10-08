@@ -24,4 +24,5 @@ router.put('/profile', authJwt.verifyToken, userControllers.updateUserProfile);
 
 
 
+
 module.exports = router;

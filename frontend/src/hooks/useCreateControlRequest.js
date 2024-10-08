@@ -11,14 +11,14 @@ const useCreateControlRequest = () => {
     setLoading(true);
     setError(null);
     try {
-        const token = localStorage.getItem('accessToken'); // Retrieve the token
+        const token = localStorage.getItem('accessToken'); 
         if (!token) {
             throw new Error('Token not found');
         }
 
         const response = await axios.post('http://localhost:8080/api/aq/control-requests', controlData, {
             headers: {
-                'x-access-token': token, // Include the token in the headers
+                'x-access-token': token, 
             },
         });
         setLoading(false);
