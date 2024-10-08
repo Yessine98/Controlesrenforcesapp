@@ -37,11 +37,12 @@ const AssignedControls = () => {
             <Card.Body>
               <Card.Title>{request.produit}</Card.Title>
               <Card.Text>
+                <strong>Numero:</strong> {request.numero} <br />
+                <strong>Code:</strong> {request.code} <br />
                 <strong>Lot:</strong> {request.lot} <br />
-                <strong>Motif:</strong> {request.motifControle} <br />
-                <strong>Control to perform:</strong> {request.controleAFaire} <br />
+                <strong>Secteur:</strong> {request.secteur} <br />
+                <strong>Control à faire:</strong> {request.controleAFaire} <br />
                 <strong>Execution Deadline:</strong> {new Date(request.delaiExecution).toLocaleDateString()} <br />
-                <strong>Status:</strong> {request.status}
               </Card.Text>
               <Button style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} onClick={() => handleExecute(request.id)}>Execute</Button>
             </Card.Body>

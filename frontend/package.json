@@ -16,6 +16,7 @@
     "@tanstack/react-query-devtools": "^5.56.2",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "mdb-react-ui-kit": "^9.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.8.3",

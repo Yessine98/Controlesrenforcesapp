@@ -7,6 +7,7 @@ import HomeAQ from './HomeAQ';
 import PendingControlsAQ from './PendingControlsAQ';
 import ResultsPage from './ResultsPage';
 import Archive from './Archive';
+import ProfilePage from './ProfilePage';
 
 const AQPage = () => {
   return (
@@ -21,6 +22,7 @@ const AQPage = () => {
             <Route path="pending-controls" element={<PendingControlsAQ />} />
             <Route path="results" element={<ResultsPage />} />
             <Route path="archive" element={<Archive />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Routes>
         </Col>
       </Row>

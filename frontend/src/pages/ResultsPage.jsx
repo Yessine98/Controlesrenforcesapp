@@ -129,7 +129,7 @@ const ResultsPage = () => {
               <p><strong>Conformité:</strong> {selectedRequest.conformite}</p>
               <p><strong>Commentaires:</strong> {selectedRequest.commentaires || 'No comments'}</p>
               <p><strong>Visa:</strong> {selectedRequest.visa || 'No visa'}</p>
-              <p><strong>Date de transmission</strong>{new Date(selectedRequest.dateTransmission).toLocaleDateString()}</p>
+              <p><strong>Date de transmission: </strong>{new Date(selectedRequest.dateTransmission).toLocaleDateString()}</p>
 
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="dateDecision">

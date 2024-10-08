@@ -10,6 +10,7 @@ const userRoutes = require("./routes/userRoutes");
 const aqRoutes = require('./routes/aqRoutes');
 const cqRoutes = require('./routes/cqRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const managerRoutes = require('./routes/managerRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -31,6 +32,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/aq", aqRoutes);
 app.use("/api/cq", cqRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/manager",managerRoutes);
 
 
 // Sync database

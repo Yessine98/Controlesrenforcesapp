@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, NavDropdown, Modal } from 'react-bootstrap';
 import NotificationList from './NotificationList';
+import ProfilePage from '../pages/ProfilePage';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { GoSignOut } from 'react-icons/go';
@@ -103,7 +104,7 @@ const LoggedInNavbar = ({ notifications, setNotifications, unreadCount, setUnrea
                             )}
                         </Nav.Link>
                         <NavDropdown title={`${user.username} (${user.role})`} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#profile"><CgProfile /> 
+                        <NavDropdown.Item as={Link} to={user.role === 'AQ' ? "/aq/profile" : "/cq/profile"}><CgProfile />
                             Profile</NavDropdown.Item>
                             <NavDropdown.Item onClick={handleLogout}><GoSignOut/>Logout</NavDropdown.Item>
                         </NavDropdown>

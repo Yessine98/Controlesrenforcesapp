@@ -2,6 +2,9 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 
+const ControlRequest = db.controlRequest;
+const ControlResult = db.controlResult;
+
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
 
@@ -61,3 +64,54 @@ exports.signin = (req, res) => {
         res.status(500).send({ message: err.message });
       });
   };
+
+// Get user profile
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.userId);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    res.status(200).send({ username: user.username });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+// Update user profile
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const { username, currentPassword, newPassword } = req.body;
+    const user = await User.findByPk(req.userId);
+    
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    // Check if the current password is provided and valid
+    if (currentPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).send({ message: 'Current password is incorrect' });
+      }
+    }
+
+    // Update username if provided
+    if (username) {
+      user.username = username;
+    }
+
+    // Hash and update password if provided
+    if (newPassword) {
+      user.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    await user.save();
+    console.log("Profile updated");
+    res.status(200).send({ message: 'Profile updated successfully.' });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+

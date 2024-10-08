@@ -19,11 +19,12 @@ const PendingControlsAQ = () => {
           <Card>
             <Card.Body>
               <Card.Title>{request.produit}</Card.Title>
+              <Card.Text>Numero: {request.numero}</Card.Text>
+              <Card.Text>Code: {request.code}</Card.Text>
               <Card.Text>Lot: {request.lot}</Card.Text>
               <Card.Text>Motif de Contrôle: {request.motifControle}</Card.Text>
               <Card.Text>Contrôle à faire: {request.controleAFaire}</Card.Text>
               <Card.Text>Délai d'exécution: {new Date(request.delaiExecution).toLocaleDateString()}</Card.Text>
-              <Card.Text>Status: {request.status}</Card.Text>
               <Card.Text>
                 Assigned CQ Users: {request.assignedCQUsers.map(user => user.username).join(', ') || 'None'}
               </Card.Text>
