@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Nav, Col } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { FaHome, FaTasks, FaArchive } from 'react-icons/fa';
+import { FaLinkSlash } from "react-icons/fa6";
+
 import { MdAssessment } from 'react-icons/md';
 
 const AqSidebar = () => {
@@ -68,6 +70,17 @@ const AqSidebar = () => {
           activeStyle={activeStyle} 
           className="text-decoration-none">
           <FaTasks className="me-2" /> Pending Controls
+        </Nav.Link>
+
+        <Nav.Link 
+          as={NavLink} 
+          to="/aq/refused-controls" 
+          onClick={() => handleButtonClick('refusedControls')} 
+          active={activeButton === 'refusedControls'} 
+          style={navButtonStyle} 
+          activeStyle={activeStyle} 
+          className="text-decoration-none">
+          <FaLinkSlash className="me-2" /> Refused Controls
         </Nav.Link>
 
         <Nav.Link 

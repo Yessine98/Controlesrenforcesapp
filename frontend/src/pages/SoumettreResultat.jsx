@@ -17,14 +17,8 @@ const SoumettreResultat = () => {
     numero: '',
     designation: '',
     secteur: '',
-    datePrelevement: '',
-    anomalie: '',
     numeroSeau: '',
-    tempsPrelevement: '',
-    tempsControleHeures: '',
     eventNumber: '',
-    preleveur: '',
-    controleur: '',
     commentaires: '',
     conformite: '',
     visa: '',
@@ -45,14 +39,8 @@ const SoumettreResultat = () => {
       numero: '',
       designation: '',
       secteur: '',
-      datePrelevement: '',
-      anomalie: '',
       numeroSeau: '',
-      tempsPrelevement: '',
-      tempsControleHeures: '',
       eventNumber: '',
-      preleveur: '',
-      controleur: '',
       commentaires: '',
       conformite: 'conforme',
       visa: '',
@@ -77,14 +65,8 @@ const SoumettreResultat = () => {
         numero: selectedControl.numero || '',
         designation: selectedControl.produit || '',
         secteur: selectedControl.secteur || '',
-        datePrelevement: '', // User needs to input
-        anomalie: '',
         numeroSeau: '',
-        tempsPrelevement: '',
-        tempsControleHeures: '',
         eventNumber: '',
-        preleveur: '', // User needs to input
-        controleur: '', // User needs to input
         commentaires: '',
         conformite: 'conforme',
         visa: '',
@@ -254,17 +236,6 @@ const SoumettreResultat = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="datePrelevement">
-              <Form.Label>Date de Prélèvement</Form.Label>
-              <Form.Control
-                type="date"
-                name="datePrelevement"
-                value={resultData.datePrelevement}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
             <Form.Group controlId="dateControle">
               <Form.Label>Date de Contrôle</Form.Label>
               <Form.Control
@@ -273,17 +244,6 @@ const SoumettreResultat = () => {
                 value={resultData.dateControle}
                 onChange={handleChange}
                 required
-              />
-            </Form.Group>
-
-            <Form.Group controlId="anomalie">
-              <Form.Label>Anomalie</Form.Label>
-              <Form.Control
-                type="text"
-                name="anomalie"
-                value={resultData.anomalie}
-                onChange={handleChange}
-                placeholder="Anomalie (optional)"
               />
             </Form.Group>
 
@@ -306,52 +266,6 @@ const SoumettreResultat = () => {
                 value={resultData.numeroSeau}
                 onChange={handleChange}
                 placeholder="Numéro Seau (optional)"
-              />
-            </Form.Group>
-
-            <Form.Group controlId="preleveur">
-              <Form.Label>Préleveur</Form.Label>
-              <Form.Control
-                type="text"
-                name="preleveur"
-                value={resultData.preleveur}
-                onChange={handleChange}
-                placeholder="Préleveur (optional)"
-                required
-              />
-            </Form.Group>
-
-            <Form.Group controlId="tempsPrelevement">
-              <Form.Label>Temps de Prélèvement</Form.Label>
-              <Form.Control
-                type="number"
-                name="tempsPrelevement"
-                value={resultData.tempsPrelevement}
-                onChange={handleChange}
-                placeholder="Temps de Prélèvement (optional)"
-              />
-            </Form.Group>
-
-            <Form.Group controlId="controleur">
-              <Form.Label>Contrôleur</Form.Label>
-              <Form.Control
-                type="text"
-                name="controleur"
-                value={resultData.controleur}
-                onChange={handleChange}
-                placeholder="Contrôleur (optional)"
-                required
-              />
-            </Form.Group>
-
-            <Form.Group controlId="tempsControleHeures">
-              <Form.Label>Temps de Contrôle (en heures)</Form.Label>
-              <Form.Control
-                type="number"
-                name="tempsControleHeures"
-                value={resultData.tempsControleHeures}
-                onChange={handleChange}
-                placeholder="Temps de Contrôle (optional)"
               />
             </Form.Group>
 

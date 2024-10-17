@@ -79,7 +79,7 @@ const ManagerSidebar = () => {
           style={navButtonStyle} 
           activeStyle={activeStyle} 
           className="text-decoration-none">
-          <FaUser className="me-2" /> All controls
+          <FaTasks className="me-2" /> All controls
         </Nav.Link>
 
     

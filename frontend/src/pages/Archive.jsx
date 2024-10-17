@@ -136,15 +136,9 @@ const ArchivePage = () => {
                         <p><strong>Lot:</strong> {result.lot}</p>
                         <p><strong>Secteur:</strong>{result.controlRequest.secteur}</p>
                         <p><strong>Controles demandes:</strong>{result.controlRequest.controleAFaire}</p>
-                        <p><strong>Date de Prelevement:</strong> {new Date(result.datePrelevement).toLocaleDateString()}</p>
                         <p><strong>Date de Controle:</strong> {new Date(result.dateControle).toLocaleDateString()}</p>
-                        <p><strong>Anomalie:</strong> {result.anomalie || 'None'}</p>
                         <p><strong>N° Event: </strong>{result.eventNumber}</p>
                         <p><strong>N° Seau Barils-Caisse: </strong>{result.numeroSeau}</p>
-                        <p><strong>Péleveur: </strong>{result.preleveur}</p>
-                        <p><strong>Temps de Prelevement:</strong> {result.tempsPrelevement}</p>
-                        <p><strong>Controleur:</strong> {result.controleur || 'N/A'}</p>
-                        <p><strong>Temps de Controle:</strong> {result.tempsControleHeures} heures</p>
                         <p><strong>Commentaires: </strong>{result.commentaires}</p>
                         <p><strong>Visa:</strong> {result.visa || 'Not available'}</p>
                         <p><strong>Date de transmission: </strong>{new Date(result.dateTransmission).toLocaleDateString()}</p>

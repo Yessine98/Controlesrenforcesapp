@@ -33,7 +33,7 @@ module.exports = (sequelize, Sequelize) => {
       }
     },
     role: {
-      type: Sequelize.ENUM('AQ', 'CQ', 'manager'),
+      type: Sequelize.ENUM('AQ', 'CQ', 'manager','admin'),
       allowNull: false,
       defaultValue: 'AQ',
       validate: {

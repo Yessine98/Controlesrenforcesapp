@@ -33,37 +33,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ENUM('validation', 'routine'),
       allowNull: false,
     },
-    datePrelevement: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
-    anomalie: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
     numeroSeau: {
       type: Sequelize.STRING,
-      allowNull: true,
-    },
-    tempsPrelevement: {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-    },
-    tempsControleHeures: {
-      type: Sequelize.INTEGER,
       allowNull: true,
     },
     eventNumber: {
       type: Sequelize.STRING,
       allowNull: true,
-    },
-    preleveur: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    controleur: {
-      type: Sequelize.STRING,
-      allowNull: false,
     },
     commentaires: {
       type: Sequelize.TEXT,

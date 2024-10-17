@@ -14,6 +14,9 @@ router.get('/control-requests/pending', authJwt.verifyToken, isAQ, aqController.
 router.get('/completed-requests', authJwt.verifyToken, isAQ, aqController.getCompletedControlRequests);
 router.put('/completed-requests/:id/decision', authJwt.verifyToken, isAQ, aqController.updateControlResult);
 router.get('/archived-results', authJwt.verifyToken, isAQManger,aqController.getArchivedResults);
+router.put('/controlRequest/cancel/:id', authJwt.verifyToken,isAQ, aqController.cancelControlRequest);
+router.get('/controlRequest/refused', authJwt.verifyToken,isAQ, aqController.getRefusedControlRequests);
+
 
 
 

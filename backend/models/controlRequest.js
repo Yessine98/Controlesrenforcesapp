@@ -13,10 +13,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    motifControle: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
     controleAFaire: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -26,8 +22,16 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
     status: {
-      type: Sequelize.ENUM('pending', 'in progress', 'completed'),
+      type: Sequelize.ENUM('pending', 'in progress', 'completed','cancelled','refused'),
       defaultValue: 'pending',
+    },
+    justification: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },
+    requestMoreInfo: {
+      type: Sequelize.TEXT,
+      allowNull: true,
     },
     requesterId: {
       type: Sequelize.INTEGER,

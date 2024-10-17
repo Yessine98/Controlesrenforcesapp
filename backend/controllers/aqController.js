@@ -124,6 +124,31 @@ exports.getPendingControlRequests = async (req, res) => {
   }
 };
 
+exports.getRefusedControlRequests = async (req, res) => {
+  try {
+    const refusedRequests = await ControlRequest.findAll({
+      where: {
+        status: 'refused' // Filter by 'refused' status
+      },
+      include: [{
+        model: User, // Assuming the associated model is User
+        as: 'assignedCQUsers', // Use the correct alias for the association
+        attributes: ['id', 'username'] // Specify the fields you want to include
+      }]
+    });
+
+    if (refusedRequests.length === 0) {
+      return res.status(404).send({ message: 'No refused control requests found.' });
+    }
+
+    res.status(200).send(refusedRequests);
+  } catch (error) {
+    console.error("Error fetching refused control requests:", error);
+    res.status(500).send({ message: error.message });
+  }
+};
+
+
 
 // View completed control requests along with their associated results
 exports.getCompletedControlRequests = async (req, res) => {
@@ -203,3 +228,66 @@ exports.getArchivedResults = async (req, res) => {
     res.status(500).json({ message: 'Error fetching archived results' });
   }
 };
+
+
+// Cancel control request
+// Cancel control request
+exports.cancelControlRequest = async (req, res) => {
+  try {
+    const controlRequestId = req.params.id; // Extract control request ID from URL params
+    const userId = req.userId; // The AQ user's ID from authentication
+
+    // Debugging logs
+    console.log('Request Params:', req.params);
+    console.log('Control Request ID:', controlRequestId);
+
+    if (!controlRequestId) {
+      return res.status(400).json({ message: 'Control request ID is required.' });
+    }
+
+    // Find the control request
+    const controlRequest = await ControlRequest.findOne({
+      where: { id: controlRequestId, requesterId: userId, status: 'pending' } // Only allow cancellation if the status is pending and requester is the AQ user
+    });
+
+    if (!controlRequest) {
+      return res.status(404).json({ message: 'Control request not found or already in progress.' });
+    }
+
+    // Update the status to cancelled
+    controlRequest.status = 'cancelled';
+    await controlRequest.save();
+
+    // Notify the CQ users that the control request has been cancelled
+    const cqUsers = await controlRequest.getAssignedCQUsers();
+    const io = getSocketInstance(); // Get socket instance
+    const onlineUsers = getOnlineUsers(); // Get online users
+
+    for (const user of cqUsers) {
+      // Create a cancellation notification
+      const notification = await createNotification({
+        recipientId: user.id,
+        type: 'control_cancelled',
+        message: `Control request for ${controlRequest.produit} has been cancelled.`,
+        controlId: controlRequest.id,
+      });
+
+      // Emit the cancellation notification via socket if the user is online
+      if (onlineUsers[user.id]) {
+        io.to(onlineUsers[user.id]).emit('newNotification', {
+          ...notification.dataValues,
+          createdAt: new Date(),
+          read: false,
+        });
+      }
+    }
+
+    res.status(200).json({ message: 'Control request cancelled successfully.' });
+  } catch (error) {
+    console.error('Error cancelling control request:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+

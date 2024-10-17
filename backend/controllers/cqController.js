@@ -111,9 +111,6 @@ exports.markControlRequestInProgress = async (req, res) => {
 
 
 
-
-
-
 // Submit control result
 exports.submitControlResult = async (req, res) => {
   try {
@@ -141,14 +138,8 @@ exports.submitControlResult = async (req, res) => {
       numero: req.body.numero || controlRequest.numero,
       designation: req.body.produit || controlRequest.produit,
       secteur: req.body.secteur || controlRequest.secteur,
-      datePrelevement: req.body.datePrelevement || null,
-      anomalie: req.body.anomalie || null,
       numeroSeau: req.body.numeroSeau || null,
-      tempsPrelevement: req.body.tempsPrelevement || null,
-      tempsControleHeures: req.body.tempsControleHeures || null,
       eventNumber: req.body.eventNumber || null,
-      preleveur: req.body.preleveur,
-      controleur: req.body.controleur,
       commentaires: req.body.commentaires || '',
       dateTransmission: new Date(),
       conformite: req.body.conformite || 'conforme',
@@ -207,5 +198,68 @@ exports.submitControlResult = async (req, res) => {
   }
 };
 
+//Refuse control request
+exports.refuseControlRequest = async (req, res) => {
+  try {
+    // Find the control request by ID
+    const controlRequest = await ControleRequest.findByPk(req.params.id);
+    if (!controlRequest) {
+      console.log("Control request not found");
+      return res.status(404).send({ message: 'Control request not found.' });
+    }
+
+    // Ensure the request hasn't already been refused or completed
+    if (controlRequest.status === 'completed' || controlRequest.status === 'refused') {
+      console.log("Control request has already been processed");
+      return res.status(400).send({ message: 'Control request has already been completed or refused.' });
+    }
+
+    // Update the control request with the refusal details
+    controlRequest.status = 'refused';
+    controlRequest.justification = req.body.justification || 'No justification provided';
+    controlRequest.requestMoreInfo = req.body.requestMoreInfo || false; // Whether more info is requested
+
+    await controlRequest.save(); // Save the updated control request
+
+    console.log("Control request refused and updated with justification and requestMoreInfo.");
+
+    // Create a notification for the AQ user (requester)
+    const notification = await createNotification({
+      recipientId: controlRequest.requesterId, // AQ user who requested the control
+      type: 'control_refused',
+      message: `Control request for ${controlRequest.produit} has been refused.`,
+      controlId: controlRequest.id
+    });
+
+    console.log("Notification created:", notification);
+
+    // Get Socket.io instance and online users
+    const io = getSocketInstance();
+    const onlineUsers = getOnlineUsers();
+
+    // Log online users
+    console.log("Online users:", onlineUsers);
+
+    // Emit the refusal notification to the AQ (requester) if they are online
+    if (onlineUsers[controlRequest.requesterId]) {
+      console.log(`Emitting refusal notification to ${controlRequest.requesterId}`);
+      io.to(onlineUsers[controlRequest.requesterId]).emit('newNotification', {
+        ...notification.dataValues, // Spread the notification data
+        createdAt: new Date(),
+        read: false, // Assuming it's unread initially
+      });
+    } else {
+      console.warn(`User ID ${controlRequest.requesterId} not found in onlineUsers.`);
+    }
+
+    res.status(200).send({
+      message: 'Control request refused successfully and notification sent',
+      controlRequest: controlRequest
+    });
+  } catch (error) {
+    console.error("Error refusing control request:", error);
+    res.status(500).send({ message: error.message });
+  }
+};
 
 

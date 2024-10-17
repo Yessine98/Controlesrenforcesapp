@@ -6,12 +6,11 @@ const HomeAQ = () => {
     const [show, setShow] = useState(false);
     const [produit, setProduit] = useState('');
     const [lot, setLot] = useState('');
-    const [motifControle, setMotifControle] = useState('');
     const [controleAFaire, setControleAFaire] = useState('');
     const [delaiExecution, setDelaiExecution] = useState('');
     const [secteur, setSecteur] = useState('Routine'); // Default value
     const [assignedCQUserIds, setAssignedCQUserIds] = useState([]);
-    const [numero, setNumero] = useState(`CR-${new Date().getFullYear().toString().slice(-2)}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`); // Editable
+    const [numero, setNumero] = useState(`CR-${new Date().getFullYear().toString().slice(-2)}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`)
     const [code, setCode] = useState(''); // Editable
 
     const { createControlRequest, fetchCQUsers, cqUsers, loading, error } = useCreateControlRequest();
@@ -29,12 +28,11 @@ const HomeAQ = () => {
             const response = await createControlRequest({
                 produit,
                 lot,
-                motifControle,
                 controleAFaire,
                 delaiExecution,
                 secteur,
-                numero, // User-inputted numero
-                code,   // User-inputted code
+                numero, 
+                code,   
                 assignedCQUserIds,
             });
             console.log(response);
@@ -53,8 +51,8 @@ const HomeAQ = () => {
     style={{ 
         marginTop: '1rem', 
         background: 'linear-gradient(to right,#263F26,#9EAA9E)', 
-        color: 'white',  // Adjust text color to ensure readability
-        border: 'none' // Optional: remove border if needed
+        color: 'white',  
+        border: 'none' 
     }} 
     onClick={handleShow}
 >
@@ -73,7 +71,7 @@ const HomeAQ = () => {
                             <Form.Control
                                 type="text"
                                 value={numero}
-                                onChange={(e) => setNumero(e.target.value)} // Allow user to change numero
+                                onChange={(e) => setNumero(e.target.value)} 
                             />
                         </Form.Group>
                         <Form.Group controlId="formCode">
@@ -81,7 +79,7 @@ const HomeAQ = () => {
                             <Form.Control
                                 type="text"
                                 value={code}
-                                onChange={(e) => setCode(e.target.value)} // Allow user to change code
+                                onChange={(e) => setCode(e.target.value)} 
                                 required
                             />
                         </Form.Group>
@@ -105,16 +103,7 @@ const HomeAQ = () => {
                                 required
                             />
                         </Form.Group>
-                        <Form.Group controlId="formMotifControle">
-                            <Form.Label>Motif Controle</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter control motif"
-                                value={motifControle}
-                                onChange={(e) => setMotifControle(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
+
                         <Form.Group controlId="formControleAFaire">
                             <Form.Label>Controle à Faire</Form.Label>
                             <Form.Control

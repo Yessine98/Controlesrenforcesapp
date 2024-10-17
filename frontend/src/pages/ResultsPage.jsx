@@ -117,15 +117,8 @@ const ResultsPage = () => {
               <p><strong>Lot:</strong> {selectedRequest.lot}</p>
               <p><strong>Secteur:</strong> {selectedRequest.secteur}</p>
               <p><strong>Contrôles Demandés:</strong> {selectedRequest.controlesDemandes}</p>
-              <p><strong>Date de Prélèvement:</strong> {new Date(selectedRequest.datePrelevement).toLocaleDateString()}</p>
-              <p><strong>Date de Contrôle:</strong> {new Date(selectedRequest.dateControle).toLocaleDateString()}</p>
-              <p><strong>Anomalie:</strong> {selectedRequest.anomalie || 'No anomaly'}</p>
               <p><strong>N° EVENT :</strong> {selectedRequest.eventNumber || 'No event number'}</p>
               <p><strong>N° Seau Barils-Caisse:</strong> {selectedRequest.numeroSeau || 'No number'}</p>
-              <p><strong>Préleveur:</strong> {selectedRequest.preleveur || 'No preleveur'}</p>
-              <p><strong>Temps Prélèvement:</strong> {selectedRequest.tempsPrelevement || 'No time'}</p>
-              <p><strong>Contrôleur:</strong> {selectedRequest.controleur || 'No controleur'}</p>
-              <p><strong>Temps Contrôle (Heures):</strong> {selectedRequest.tempsControleHeures || 'No time'}</p>
               <p><strong>Conformité:</strong> {selectedRequest.conformite}</p>
               <p><strong>Commentaires:</strong> {selectedRequest.commentaires || 'No comments'}</p>
               <p><strong>Visa:</strong> {selectedRequest.visa || 'No visa'}</p>
