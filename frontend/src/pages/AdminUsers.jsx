@@ -4,8 +4,7 @@ import axios from 'axios';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
-  const [newPassword, setNewPassword] = useState('');
-  const [selectedUserId, setSelectedUserId] = useState('');
+  const [passwords, setPasswords] = useState({}); // Object to store passwords for each user
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -31,6 +30,7 @@ const AdminUsers = () => {
 
   const handleResetPassword = async (userId) => {
     const token = localStorage.getItem('accessToken');
+    const newPassword = passwords[userId]; // Get the new password for this specific user
 
     try {
       const response = await axios.post('http://localhost:8080/api/admin/reset-password', { userId, newPassword }, {
@@ -39,8 +39,7 @@ const AdminUsers = () => {
         },
       });
       setMessage('Password reset successfully.');
-      setNewPassword(''); // Clear password input after reset
-      setSelectedUserId(''); // Clear selected user ID
+      setPasswords(prevPasswords => ({ ...prevPasswords, [userId]: '' })); // Clear password input after reset
     } catch (err) {
       setError('Error resetting password.');
       console.log('Error:', err);
@@ -49,7 +48,7 @@ const AdminUsers = () => {
 
   return (
     <MDBContainer fluid className='d-flex align-items-center justify-content-center'>
-      <MDBCard className='m-4' style={{ maxWidth: '600px' }}>
+      <MDBCard className='m-4' style={{ maxWidth: '800px' }}>
         <MDBCardBody className='px-5'>
           <h2 className="text-uppercase text-center mb-4">Admin User Management</h2>
           {message && <p className="text-success text-center">{message}</p>}
@@ -58,35 +57,37 @@ const AdminUsers = () => {
           <MDBTable bordered>
             <MDBTableHead>
               <tr>
-                <th>User ID</th>
                 <th>Username</th>
+                <th>Role</th>
                 <th>Email</th>
-                <th>Action</th>
+                <th>Reset password</th>
               </tr>
             </MDBTableHead>
             <MDBTableBody>
               {users.map(user => (
                 <tr key={user.id}>
-                  <td>{user.id}</td>
                   <td>{user.username}</td>
+                  <td>{user.role}</td>
                   <td>{user.email}</td>
                   <td>
                     <MDBInput 
                       type='password' 
                       placeholder='New Password' 
-                      value={selectedUserId === user.id ? newPassword : ''} 
-                      onChange={(e) => {
-                        setNewPassword(e.target.value);
-                        setSelectedUserId(user.id); // Set the selected user ID
-                      }} 
+                      value={passwords[user.id] || ''} // Only show password for this user
+                      onChange={(e) => setPasswords({ ...passwords, [user.id]: e.target.value })} 
                     />
-                    <MDBBtn 
-                      className='mt-2' 
-                      onClick={() => handleResetPassword(user.id)}
-                      disabled={!newPassword}
-                    >
-                      Reset Password
-                    </MDBBtn>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <MDBBtn 
+                        className='mt-2' 
+                        onClick={() => handleResetPassword(user.id)}
+                        disabled={!passwords[user.id]} // Disable button if no password is entered for this user
+                        style={{
+                          background: 'linear-gradient(to right,#263F26,#9EAA9E)'
+                        }}
+                      >
+                        Reset Password
+                      </MDBBtn>
+                    </div>
                   </td>
                 </tr>
               ))}

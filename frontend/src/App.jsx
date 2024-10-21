@@ -50,7 +50,7 @@ function App() {
                         setUnreadCount={setUnreadCount} // Pass setUnreadCount as a prop
                         setNotifications={setNotifications} // Pass setNotifications as a prop
                     />
-                    <div className="content" style={{ minHeight: 'calc(100vh - 200px)', paddingBottom: '100px' }}>
+                    <div className="content" style={{ minHeight: 'calc(100vh - 200px)' }}>
                         <RoutesList />
                     </div>
                     <Footer />

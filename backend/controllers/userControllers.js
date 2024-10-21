@@ -7,13 +7,38 @@ let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
-  // Save User to Database
-  User.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8),
-    role: req.body.role,
-  })
+  // Normalize email to lowercase
+  const normalizedEmail = req.body.email.toLowerCase();
+
+  // Validate email format
+  if (!normalizedEmail.includes("@sanofi.com")) {
+    return res
+      .status(400)
+      .send({ message: 'Email must contain "@sanofi.com"' });
+  }
+
+  // Validate password length
+  if (req.body.password.length < 8) {
+    return res
+      .status(400)
+      .send({ message: "Password must be at least 8 characters long" });
+  }
+
+  // Check if user with the email already exists
+  User.findOne({ where: { email: normalizedEmail } })
+    .then((existingUser) => {
+      if (existingUser) {
+        return res.status(400).send({ message: "Email is already in use." });
+      }
+
+      // Save User to Database
+      return User.create({
+        username: req.body.username,
+        email: normalizedEmail, // Store normalized email
+        password: bcrypt.hashSync(req.body.password, 8),
+        role: req.body.role,
+      });
+    })
     .then(() => {
       res.send({ message: "L'utilisateur a été enregistré avec succès!" });
     })
@@ -143,12 +168,10 @@ exports.forgotPassword = async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     // Send response to the user
-    res
-      .status(200)
-      .json({
-        message:
-          "A notification has been sent to the admin. For further help, please contact the admin on Teams.",
-      });
+    res.status(200).json({
+      message:
+        "A notification has been sent to the admin. For further help, please contact the admin on Teams.",
+    });
   } catch (error) {
     res
       .status(500)

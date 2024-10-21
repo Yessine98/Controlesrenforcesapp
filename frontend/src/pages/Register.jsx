@@ -10,8 +10,8 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { register, loading, error, success } = useRegister(); // Destructure the hook
-  const navigate = useNavigate(); // Initialize useNavigate
+  const { register, loading, error, success } = useRegister();
+  const navigate = useNavigate();
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -28,10 +28,11 @@ const Register = () => {
 
     try {
       const userData = { username, email, password, role };
-      await register(userData); 
-      console.log(userData);
-      alert("Account created successfully!")
-      navigate('/login');
+      await register(userData);
+      if (success) {
+        alert("Account created successfully!");
+        navigate('/login');
+      }
     } catch (err) {
       console.error(err);
     }
