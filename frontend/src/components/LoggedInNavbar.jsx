@@ -106,7 +106,7 @@ const LoggedInNavbar = ({ notifications, setNotifications, unreadCount, setUnrea
                         <NavDropdown title={`${user.username} (${user.role})`} id="basic-nav-dropdown">
                         <NavDropdown.Item as={Link} to={user.role === 'AQ' ? "/aq/profile": user.role==='CQ'? "/cq/profile":"manager/profile"}><CgProfile />
                             Profile</NavDropdown.Item>
-                            <NavDropdown.Item onClick={handleLogout}><GoSignOut/>Logout</NavDropdown.Item>
+                            <NavDropdown.Item onClick={handleLogout}><GoSignOut/>Se déconnecter</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
@@ -119,7 +119,7 @@ const LoggedInNavbar = ({ notifications, setNotifications, unreadCount, setUnrea
                 </Modal.Header>
                 <Modal.Body>
                     {notifications.length === 0 ? (
-                        <p>No new notifications</p>
+                        <p> Aucune nouvelle notification</p>
                     ) : (
                         <NotificationList 
                             notifications={notifications}

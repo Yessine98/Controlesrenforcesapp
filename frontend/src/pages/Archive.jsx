@@ -14,6 +14,9 @@ const ArchivePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [resultsPerPage] = useState(8); 
 
+  // Sorting state
+  const [sortOrder, setSortOrder] = useState('asc'); // Default sorting order
+
   const getCardVariant = (decisionAQ) => {
     switch (decisionAQ) {
       case 'liberable':
@@ -72,6 +75,23 @@ const ArchivePage = () => {
     setCurrentPage(1); // Reset to the first page after search
   };
 
+  // Sort results based on the selected order
+  const sortResults = (order) => {
+    const sortedResults = [...filteredResults].sort((a, b) => {
+      const dateA = new Date(a.dateDecision);
+      const dateB = new Date(b.dateDecision);
+      return order === 'asc' ? dateA - dateB : dateB - dateA; // Ascending or descending
+    });
+    setFilteredResults(sortedResults);
+  };
+
+  // Handle sort order change
+  const handleSortChange = (event) => {
+    const newOrder = event.target.value;
+    setSortOrder(newOrder);
+    sortResults(newOrder); // Sort the results whenever the order changes
+  };
+
   // Pagination logic: Calculate the indices of the results to display on the current page
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
@@ -90,12 +110,19 @@ const ArchivePage = () => {
 
   return (
     <div>
-      {/* Flexbox to align h2 and SearchBar */}
+      {/* Flexbox to align h2, SearchBar, and Sort Dropdown */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Archive of Results</h2>
-        {/* Make the search bar smaller with size="sm" */}
-        <div style={{ maxWidth: '300px' }}> {/* You can adjust the width as needed */}
-          <SearchBar onSearch={handleSearch} />
+        <div className="d-flex align-items-center">
+          {/* Sort Dropdown */}
+          <Form.Select value={sortOrder} onChange={handleSortChange} style={{ width: '150px', marginRight: '10px' }}>
+            <option value="asc">Trier par Date (Croissant)</option>
+            <option value="desc">Trier par Date (Décroissant)</option>
+          </Form.Select>
+          {/* Make the search bar smaller with size="sm" */}
+          <div style={{ maxWidth: '300px' }}> {/* You can adjust the width as needed */}
+            <SearchBar onSearch={handleSearch} />
+          </div>
         </div>
       </div>
 

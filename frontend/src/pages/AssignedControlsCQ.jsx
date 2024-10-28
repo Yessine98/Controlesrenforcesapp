@@ -56,40 +56,44 @@ const AssignedControls = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  if (!assignedControls || assignedControls.length === 0) {
-    return <p>No controls have been assigned yet.</p>;
-  }
-
   return (
     <>
-      <Row>
-        {assignedControls.map(request => (
-          <Col key={request.id} md={4} className="mb-4">
-            <Card>
-            <Card.Body>
-              <Card.Title>{request.produit}</Card.Title>
-              <Card.Text>
-      <strong>Numero:</strong> {request.numero} <br />
-      <strong>Code:</strong> {request.code} <br />
-      <strong>Lot:</strong> {request.lot} <br />
-      <strong>Secteur:</strong> {request.secteur} <br />
-      <strong>Control à faire:</strong> {request.controleAFaire} <br />
-      <strong>Execution Deadline:</strong> {new Date(request.delaiExecution).toLocaleDateString()} <br />
-    </Card.Text>
-    <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '10px' }}>
-      <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} onClick={() => handleExecute(request.id)}>Execute</Button>
-      <Button style={{ background: 'linear-gradient(to right ,#F2CFDB,#FF78D2)' }} onClick={() => handleShowModal(request.id)}>Refuse</Button>
-    </div>
-  </Card.Body>
-</Card>
-          </Col>
-        ))}
-      </Row>
+      <h2 className="my-4">Contrôles Assignés</h2>
+      <hr />
+      
+      {/* Conditional message for no assigned controls */}
+      {(!assignedControls || assignedControls.length === 0) ? (
+        <p>Aucun contrôle n'a encore été assigné.</p>
+      ) : (
+        <Row>
+          {assignedControls.map(request => (
+            <Col key={request.id} md={4} className="mb-4">
+              <Card>
+                <Card.Body>
+                  <Card.Title>{request.produit}</Card.Title>
+                  <Card.Text>
+                    <strong>Numero:</strong> {request.numero} <br />
+                    <strong>Code:</strong> {request.code} <br />
+                    <strong>Lot:</strong> {request.lot} <br />
+                    <strong>Secteur:</strong> {request.secteur} <br />
+                    <strong>Control à faire:</strong> {request.controleAFaire} <br />
+                    <strong>Délai d'exécution:</strong> {new Date(request.delaiExecution).toLocaleDateString()} <br />
+                  </Card.Text>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '10px' }}>
+                    <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} onClick={() => handleExecute(request.id)}>Exécuter</Button>
+                    <Button style={{ background: 'linear-gradient(to right ,#F2CFDB,#FF78D2)' }} onClick={() => handleShowModal(request.id)}>Refuser</Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      )}
 
       {/* Modal for Refusal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Refuse Control Request</Modal.Title>
+          <Modal.Title>Refuser la Demande de Contrôle</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -103,7 +107,7 @@ const AssignedControls = () => {
               />
             </Form.Group>
             <Form.Group controlId="requestMoreInfo">
-              <Form.Label>Request More Information</Form.Label>
+              <Form.Label>Demander Plus d'Informations</Form.Label>
               <Form.Control 
                 as="textarea" 
                 rows={3} 
@@ -114,13 +118,11 @@ const AssignedControls = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button  onClick={() => setShowModal(false)}
-            style={{background:'linear-gradient(to right,#9EAA9E,#263F26)'}}>
-            Cancel
+          <Button onClick={() => setShowModal(false)} style={{ background: 'linear-gradient(to right,#9EAA9E,#263F26)' }}>
+            Annuler
           </Button>
-          <Button  onClick={handleRefuse}
-          style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}}>
-            Submit Refusal
+          <Button onClick={handleRefuse} style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }}>
+            Soumettre le Refus
           </Button>
         </Modal.Footer>
       </Modal>

@@ -7,9 +7,11 @@ const currentDateTime = new Date().toLocaleString();
 
 const HomeCQ = () => {
   return (
-    <Container style={{ marginTop: '20px' }}>
-     <h2>Welcome to the Quality Control Management System</h2>
+    <Container >
+      <div style={{ padding: '2rem' }}>
+     <h2>Bienvenue dans le Système de Gestion des Contrôles Renforcées</h2>
      <p>{currentDateTime}</p>
+     </div>
     </Container>
 
   );

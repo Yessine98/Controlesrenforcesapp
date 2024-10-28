@@ -43,15 +43,15 @@ const Register = () => {
       <div className='mask gradient-custom-3'></div>
       <MDBCard className='m-5' style={{ maxWidth: '600px', marginTop: '100px' }}>
         <MDBCardBody className='px-5'>
-          <h2 className="text-uppercase text-center mb-5">Create an account</h2>
-          <MDBInput wrapperClass='mb-4' label='Full name' size='lg' id='form1' type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
+          <h2 className="text-uppercase text-center mb-5">Créer un compte</h2>
+          <MDBInput wrapperClass='mb-4' label='Nom et Prénom' size='lg' id='form1' type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
           <MDBInput wrapperClass='mb-4' label='Email' size='lg' id='form2' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-          <MDBInput wrapperClass='mb-4' label='Password' size='lg' id='form3' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-          <MDBInput wrapperClass='mb-4' label='Repeat Password' size='lg' id='form4' type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          <MDBInput wrapperClass='mb-4' label='Mot de passe' size='lg' id='form3' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+          <MDBInput wrapperClass='mb-4' label='Répéter le mot de passe' size='lg' id='form4' type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
           <div className='mb-4'>
             <MDBDropdown>
               <MDBDropdownToggle caret={true} size='lg' className='w-100 gradient-custom-4'>
-                {role || 'Select Role'}
+                {role || 'Sélectionner un rôle'}
               </MDBDropdownToggle>
               <MDBDropdownMenu className='w-100'>
                 <MDBDropdownItem link onClick={() => setRole('AQ')}>AQ</MDBDropdownItem>
@@ -60,16 +60,16 @@ const Register = () => {
             </MDBDropdown>
           </div>
           <div className='d-flex flex-row justify-content-center mb-4'>
-            <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree to all statements in the Terms of Service' />
+            <MDBCheckbox name='flexCheck' id='flexCheckDefault' label="J'accepte toutes les déclarations des Conditions d'utilisation" />
           </div>
           {/* Display error or success message */}
           {error && <p className="text-danger text-center">{error}</p>}
           {success && <p className="text-success text-center">{success}</p>}
           <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg' onClick={handleRegister} disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? 'Registering...' : " S'inscrire"}
           </MDBBtn>
           <div className="text-center">
-            <p>Already have an account? <Link to="/login" style={{ color: 'green' }}>Login here</Link></p>
+            <p>Vous avez déjà un compte ? <Link to="/login" style={{ color: 'green' }}>Connectez-vous ici</Link></p>
           </div>
         </MDBCardBody>
       </MDBCard>

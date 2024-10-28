@@ -44,7 +44,7 @@ const HomeAQ = () => {
 
     return (
         <div className="home-page" style={{ padding: '2rem' }}>
-            <h2>Welcome to the Quality Control Management System</h2>
+            <h2>Bienvenue dans le Système de Gestion des Contrôles Renforcées</h2>
             <p>{currentDateTime}</p>
 
             <Button 
@@ -56,13 +56,13 @@ const HomeAQ = () => {
     }} 
     onClick={handleShow}
 >
-    Add New Control
+     Ajouter un Nouveau Contrôle
 </Button>
 
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add New Control</Modal.Title>
+                    <Modal.Title>Ajouter un Nouveau Contrôle</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -84,20 +84,20 @@ const HomeAQ = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="formProduct">
-                            <Form.Label>Product</Form.Label>
+                            <Form.Label>Produit</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter product name"
+                                placeholder="Ajouter le produit"
                                 value={produit}
                                 onChange={(e) => setProduit(e.target.value)}
                                 required
                             />
                         </Form.Group>
                         <Form.Group controlId="formLot">
-                            <Form.Label>Lot Number</Form.Label>
+                            <Form.Label>Lot</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter lot number"
+                                placeholder="Ajouter le lot"
                                 value={lot}
                                 onChange={(e) => setLot(e.target.value)}
                                 required
@@ -108,14 +108,14 @@ const HomeAQ = () => {
                             <Form.Label>Controle à Faire</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter control to be done"
+                                placeholder="Enter le control a faire"
                                 value={controleAFaire}
                                 onChange={(e) => setControleAFaire(e.target.value)}
                                 required
                             />
                         </Form.Group>
                         <Form.Group controlId="formDelaiExecution">
-                            <Form.Label>Execution Deadline</Form.Label>
+                            <Form.Label>Date Limite d'Exécution</Form.Label>
                             <Form.Control
                                 type="date"
                                 value={delaiExecution}
@@ -135,7 +135,7 @@ const HomeAQ = () => {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="formAssignedCQUsers">
-    <Form.Label>Assign CQ Users <span style={{ color: 'red' }}>*</span></Form.Label>
+    <Form.Label>Attribuer des Utilisateurs CQ <span style={{ color: 'red' }}>*</span></Form.Label>
     <Form.Control
         as="select"
         multiple
@@ -159,7 +159,7 @@ const HomeAQ = () => {
         ))}
     </Form.Control>
     <Form.Control.Feedback type="invalid">
-        Please select at least one CQ user.
+    Veuillez sélectionner au moins un utilisateur CQ.
     </Form.Control.Feedback>
 </Form.Group>
 
@@ -167,11 +167,11 @@ const HomeAQ = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button style={{background:'linear-gradient(to right,#9EAA9E,#263F26)'}} onClick={handleClose}>
-                        Close
+                    Fermer
                     </Button>
                     <Button 
                     style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} onClick={handleSubmit}>
-                        Save Changes
+                        Enregistrer les Modifications
                     </Button>
                 </Modal.Footer>
             </Modal>

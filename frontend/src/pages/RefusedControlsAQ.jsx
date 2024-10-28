@@ -33,12 +33,12 @@ const RefusedControls = () => {
   if (error) return <p>Error: {error}</p>;
 
   if (!refusedControls || refusedControls.length === 0) {
-    return <p>No refused controls available.</p>;
+    return <p>Aucun contrôle refusé disponible.</p>;
   }
 
   return (
     <Container>
-         <h2 className="my-4">Refused Control Requests</h2>
+         <h2 className="my-4">Demandes de Contrôle Refusées</h2>
          <hr />
     <Table striped bordered hover responsive>
       <thead>
@@ -48,9 +48,10 @@ const RefusedControls = () => {
           <th>Lot</th>
           <th>Secteur</th>
           <th>Control à faire</th>
+          <th>Refusé par</th>
           <th>Justification</th>
-          <th>Request More Info</th>
-          <th>Date of Refusal</th>
+          <th>Informations Demandées</th>
+          <th>Date de Refus</th>
         </tr>
       </thead>
       <tbody>
@@ -61,8 +62,9 @@ const RefusedControls = () => {
             <td>{control.lot}</td>
             <td>{control.secteur}</td>
             <td>{control.controleAFaire}</td>
-            <td>{control.justification || 'No justification provided'}</td>
-            <td>{control.requestMoreInfo || 'No additional information requested'}</td>
+            <td>{control.refuserUsername || 'Utilisateur non défini'}</td> {/* Displaying the refuser */}
+            <td>{control.justification || 'Aucune justification fournie'}</td>
+            <td>{control.requestMoreInfo || 'Aucune information supplémentaire demandée'}</td>
             <td>{new Date(control.updatedAt).toLocaleDateString()}</td>
           </tr>
         ))}

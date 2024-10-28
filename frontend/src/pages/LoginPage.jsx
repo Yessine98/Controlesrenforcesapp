@@ -44,16 +44,16 @@ const Login = () => {
       <div className='mask gradient-custom-3'></div>
       <MDBCard className='m-4' style={{ maxWidth: '600px' }}>
         <MDBCardBody className='px-5'>
-          <h2 className="text-uppercase text-center mb-4">Login</h2>
+          <h2 className="text-uppercase text-center mb-4">Se connecter</h2>
           <MDBInput wrapperClass='mb-4' label='Email' size='lg' id='form1' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-          <MDBInput wrapperClass='mb-4' label='Password' size='lg' id='form2' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+          <MDBInput wrapperClass='mb-4' label='Mot de passe' size='lg' id='form2' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
           {loginError && <p className="text-danger text-center">{loginError}</p>} {/* Show error message */}
           <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg' onClick={handleLogin} disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Logging in...' : 'Se connecter'}
           </MDBBtn>
           <div className="text-center">
-            <Link to="/forgot-password" style={{ color: 'green' }}>Forgot Password?</Link>
-            <p>Don't have an account? <Link to="/register" style={{ color: 'green' }}>Register here</Link></p>
+            <Link to="/forgot-password" style={{ color: 'green' }}>Mot de passe oublié ?</Link>
+            <p>Vous n'avez pas de compte ? <Link to="/register" style={{ color: 'green' }}>Inscrivez-vous ici</Link></p>
           </div>
         </MDBCardBody>
       </MDBCard>

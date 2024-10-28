@@ -48,16 +48,16 @@ const NotificationList = ({ notifications, onMarkAllAsRead, setNotifications }) 
     return (
         <div className="notification-list">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <strong>Unread Notifications: {unreadCount}</strong>
+                <strong>Notifications Non Lues : {unreadCount}</strong>
                 {unreadCount > 0 && (
                     <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} onClick={markAllAsRead}>
-                        Mark all as read
+                        Tout Marquer Comme Lu
                     </Button>
                 )}
             </div>
             <hr />
             {notifications.length === 0 ? (
-                <p>No new notifications</p>
+                <p>Aucune nouvelle notification</p>
             ) : (
                 notifications.map(notification => (
                     <div

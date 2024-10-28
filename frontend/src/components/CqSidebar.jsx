@@ -58,7 +58,7 @@ const CqSidebar = () => {
             style={navButtonStyle} 
             activeStyle={activeStyle} 
             className="text-decoration-none">
-              <FaHome className="me-2" /> Home Page
+              <FaHome className="me-2" /> Page d'accueil
           </Nav.Link>
 
           <Nav.Link 
@@ -69,7 +69,7 @@ const CqSidebar = () => {
             style={navButtonStyle} 
             activeStyle={activeStyle} 
             className="text-decoration-none">
-              <FaClipboardList className="me-2" /> Assigned Controls
+              <FaClipboardList className="me-2" /> Contrôles Assignés
           </Nav.Link>
 
           <Nav.Link 

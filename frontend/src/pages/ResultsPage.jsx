@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Spinner, Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import { Card, Spinner, Button, Modal, Form, Row, Col, Container } from 'react-bootstrap';
 import axios from 'axios';
 
 const ResultsPage = () => {
@@ -19,7 +19,7 @@ const ResultsPage = () => {
       try {
         const response = await axios.get('http://localhost:8080/api/aq/completed-requests', {
           headers: {
-            'x-access-token': token,  // Pass the token for authentication
+            'x-access-token': token,
           },
         });
         setResults(response.data);
@@ -37,9 +37,9 @@ const ResultsPage = () => {
   const handleShow = (request) => {
     setSelectedRequest(request);
     setShowModal(true);
-    setDateDecision(''); // Reset dateDecision when opening modal
-    setCommentairesAQ(''); // Reset comment when opening modal
-    setDecisionAQ('liberable'); // Reset to default decision
+    setDateDecision('');
+    setCommentairesAQ('');
+    setDecisionAQ('liberable');
   };
 
   const handleClose = () => {
@@ -51,8 +51,7 @@ const ResultsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('accessToken');
-    
-    // Submit the decision to your backend
+
     try {
       await axios.put(`http://localhost:8080/api/aq/completed-requests/${selectedRequest.id}/decision`, {
         dateDecision,
@@ -70,20 +69,17 @@ const ResultsPage = () => {
     }
   };
 
-  if (loading) {
-    return <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <div>
-      <h2>Results from CQ</h2>
+    <Container style={{ marginTop: '20px' }}>
+      <h2>Résultats du CQ</h2>
       <hr />
-      {results.length === 0 ? (
-        <p>No results found.</p>
+
+      {loading ? (
+        <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
+      ) : error ? (
+        <p>{error}</p>
+      ) : results.length === 0 ? (
+        <p>Aucun résultat trouvé.</p>
       ) : (
         <Row>
           {results.map((request) => (
@@ -105,7 +101,7 @@ const ResultsPage = () => {
       {/* Modal for decision */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Decision for Control Request ID: {selectedRequest ? selectedRequest.controlRequest.id : ''}</Modal.Title>
+          <Modal.Title>Décision pour la Demande de Contrôle: {selectedRequest ? selectedRequest.controlRequest.id : ''}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {selectedRequest && (
@@ -159,15 +155,14 @@ const ResultsPage = () => {
                 </Form.Group>
                 <hr/>
                 <div className="d-flex justify-content-center">
-                <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} type="submit">Submit Decision</Button>
+                  <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} type="submit">Submit Decision</Button>
                 </div>
-               
               </Form>
             </>
           )}
         </Modal.Body>
       </Modal>
-    </div>
+    </Container>
   );
 };
 

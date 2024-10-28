@@ -58,7 +58,7 @@ const AqSidebar = () => {
           style={navButtonStyle} 
           activeStyle={activeStyle} 
           className="text-decoration-none">
-          <FaHome className="me-2" /> Home Page
+          <FaHome className="me-2" /> Page d'accueil
         </Nav.Link>
 
         <Nav.Link 
@@ -69,7 +69,7 @@ const AqSidebar = () => {
           style={navButtonStyle} 
           activeStyle={activeStyle} 
           className="text-decoration-none">
-          <FaTasks className="me-2" /> Pending Controls
+          <FaTasks className="me-2" /> Contrôles en Attente
         </Nav.Link>
 
         <Nav.Link 
@@ -80,7 +80,7 @@ const AqSidebar = () => {
           style={navButtonStyle} 
           activeStyle={activeStyle} 
           className="text-decoration-none">
-          <FaLinkSlash className="me-2" /> Refused Controls
+          <FaLinkSlash className="me-2" /> Contrôles Refusés
         </Nav.Link>
 
         <Nav.Link 
@@ -91,7 +91,7 @@ const AqSidebar = () => {
           style={navButtonStyle} 
           activeStyle={activeStyle} 
           className="text-decoration-none">
-          <MdAssessment className="me-2" /> Results (Taking Decision)
+          <MdAssessment className="me-2" /> Résultats (Prise de Décision)
         </Nav.Link>
 
         <Nav.Link 

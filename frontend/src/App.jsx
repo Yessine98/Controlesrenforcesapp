@@ -40,25 +40,27 @@ function App() {
     }, [user]);
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>
-                <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+            <BrowserRouter>
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                     <AppNavbar />
                     <LoggedInNavbar 
                         notifications={notifications} 
                         unreadCount={unreadCount} 
-                        setUnreadCount={setUnreadCount} // Pass setUnreadCount as a prop
-                        setNotifications={setNotifications} // Pass setNotifications as a prop
+                        setUnreadCount={setUnreadCount} 
+                        setNotifications={setNotifications} 
                     />
-                    <div className="content" style={{ minHeight: 'calc(100vh - 200px)' }}>
-                        <RoutesList />
-                    </div>
+                        <div className="content" style={{ flexGrow: 1, padding: '0px', overflowY: 'auto' }}>
+                            <RoutesList />
+                        </div>
                     <Footer />
-                    <ReactQueryDevtools />
-                </BrowserRouter>
-            </AuthContextProvider>
-        </QueryClientProvider>
-    );
+                </div>
+                <ReactQueryDevtools />
+            </BrowserRouter>
+        </AuthContextProvider>
+    </QueryClientProvider>
+);
 }
 
 export default App;
