@@ -10,24 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # Update to latest version
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Update to latest version
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Specify Node.js version
+          node-version: '20'  # or '16' if you want to revert
 
       - name: Install dependencies
-        run: npm install
-        working-directory: frontend
+        run: |
+          cd frontend
+          npm install
 
       - name: Build
-        run: npm run build
-        working-directory: frontend
+        run: |
+          cd frontend
+          npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # Ensure you're using the latest version
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: frontend/dist
