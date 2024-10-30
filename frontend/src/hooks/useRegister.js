@@ -1,6 +1,7 @@
 // useRegister.js
 import { useState } from "react";
 import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -13,10 +14,7 @@ const useRegister = () => {
     setSuccess(false);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/user/signup",
-        userData
-      );
+      const response = await axios.post(`${apiUrl}/user/signup`, userData);
       setSuccess(response.data.message); // Assuming success returns a message
     } catch (err) {
       // Handle error response from server

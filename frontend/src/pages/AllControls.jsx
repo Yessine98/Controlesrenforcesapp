@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Spinner, Alert, Modal, Button } from 'react-bootstrap';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const AllControls = () => {
   const [controls, setControls] = useState([]);
@@ -14,7 +16,7 @@ const AllControls = () => {
     const fetchControls = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await axios.get('http://localhost:8080/api/manager/controls', {
+        const response = await axios.get(`${apiUrl}/manager/controls`, {
           headers: {
             'x-access-token': token,
           },

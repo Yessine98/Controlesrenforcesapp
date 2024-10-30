@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Spinner, Button, Modal, Form, Row, Col, Container } from 'react-bootstrap';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const ResultsPage = () => {
   const [results, setResults] = useState([]);
@@ -17,7 +19,7 @@ const ResultsPage = () => {
     const fetchResults = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await axios.get('http://localhost:8080/api/aq/completed-requests', {
+        const response = await axios.get(`${apiUrl}/aq/completed-requests`, {
           headers: {
             'x-access-token': token,
           },
@@ -53,7 +55,7 @@ const ResultsPage = () => {
     const token = localStorage.getItem('accessToken');
 
     try {
-      await axios.put(`http://localhost:8080/api/aq/completed-requests/${selectedRequest.id}/decision`, {
+      await axios.put(`${apiUrl}/aq/completed-requests/${selectedRequest.id}/decision`, {
         dateDecision,
         commentairesAQ,
         decisionAQ,

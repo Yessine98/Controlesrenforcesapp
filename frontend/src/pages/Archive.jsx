@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Spinner, Alert, Button, Collapse, Row, Col, Pagination, Form } from 'react-bootstrap';
 import axios from 'axios';
-import SearchBar from '../components/SearchBar'; // Import the SearchBar component
+import SearchBar from '../components/SearchBar'; 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const ArchivePage = () => {
   const [archivedResults, setArchivedResults] = useState([]); 
@@ -35,7 +37,7 @@ const ArchivePage = () => {
     const fetchArchivedResults = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await axios.get('http://localhost:8080/api/aq/archived-results', {
+        const response = await axios.get(`${apiUrl}/aq/archived-results`, {
           headers: {
             'x-access-token': token,
           },
@@ -152,7 +154,7 @@ const ArchivePage = () => {
                       aria-controls={`collapse-${result.id}`}
                       aria-expanded={expandedCard === result.id}
                     >
-                      {expandedCard === result.id ? 'Hide Details' : 'View Details'}
+                      {expandedCard === result.id ? 'Masquer les Détails' : 'Voir les Détails'}
                     </Button>
 
                     <Collapse in={expandedCard === result.id}>

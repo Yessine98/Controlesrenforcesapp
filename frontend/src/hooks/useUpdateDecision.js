@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const useUpdateDecision = () => {
   const [loading, setLoading] = useState(false);
@@ -7,26 +8,28 @@ const useUpdateDecision = () => {
 
   const submitDecision = async (resultId, decisionAQ, onSuccess) => {
     let isMounted = true; // Track component mount status
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     setLoading(true);
 
     try {
       await axios.put(
-        `http://localhost:8080/api/aq/completed-requests/${resultId}/decision`,
+        `${apiUrl}/aq/completed-requests/${resultId}/decision`,
         { decisionAQ },
         {
           headers: {
-            'x-access-token': token,
+            "x-access-token": token,
           },
         }
       );
-      
+
       if (isMounted) {
         onSuccess(); // Callback to update UI after successful decision
       }
     } catch (err) {
       if (isMounted) {
-        setError(err.response ? err.response.data.message : 'Error updating decision');
+        setError(
+          err.response ? err.response.data.message : "Error updating decision"
+        );
       }
     } finally {
       if (isMounted) {

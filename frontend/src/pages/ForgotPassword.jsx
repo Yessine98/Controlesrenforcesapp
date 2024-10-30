@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { MDBBtn, MDBContainer, MDBCard, MDBCardBody, MDBInput } from 'mdb-react-ui-kit';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +13,7 @@ const ForgotPassword = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/api/user/forgot-password', { email });
+      const response = await axios.post(`${apiUrl}/user/forgot-password`, { email });
       setMessage(response.data.message); // Display the new success message
       setError(''); // Clear any previous error messages
     } catch (err) {

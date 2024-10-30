@@ -59,4 +59,10 @@ db.notification.belongsTo(db.user, {
   as: "recipient",
 });
 
+// ControlRequest and User (AQ user who created the request)
+db.controlRequest.belongsTo(db.user, {
+  foreignKey: "requesterId", // This should match your actual column name in the ControlRequest table
+  as: "requester", // This alias will be used to retrieve the AQ user
+});
+
 module.exports = db;

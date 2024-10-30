@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MDBBtn, MDBContainer, MDBCard, MDBCardBody, MDBInput, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -13,7 +15,7 @@ const AdminUsers = () => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await axios.get('http://localhost:8080/api/admin/users', {
+        const response = await axios.get(`${apiUrl}/admin/users`, {
           headers: {
             'x-access-token': token,
           },

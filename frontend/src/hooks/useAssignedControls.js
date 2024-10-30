@@ -1,6 +1,7 @@
 // src/hooks/useAssignedControls.js
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const useAssignedControls = () => {
   const [assignedControls, setAssignedControls] = useState([]);
@@ -11,14 +12,16 @@ const useAssignedControls = () => {
     const fetchAssignedControls = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8080/api/cq/control-requests', {
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(`${apiUrl}/cq/control-requests`, {
           headers: {
-            'x-access-token': token,
+            "x-access-token": token,
           },
         });
         // Filter for pending controls only
-        const pendingControls = response.data.filter(request => request.status === 'pending');
+        const pendingControls = response.data.filter(
+          (request) => request.status === "pending"
+        );
         setAssignedControls(pendingControls);
       } catch (err) {
         setError(err.response ? err.response.data.message : err.message);

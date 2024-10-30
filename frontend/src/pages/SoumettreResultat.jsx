@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
-import useInProgressControls from '../hooks/useInProgressControls'; // Custom hook
+import useInProgressControls from '../hooks/useInProgressControls'; 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 
 
@@ -91,7 +93,7 @@ const SoumettreResultat = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:8080/api/cq/control-requests/${selectedControl.id}/results`,
+        `${apiUrl}/cq/control-requests/${selectedControl.id}/results`,
         {
           ...resultData,
           secteur: resultData.secteur.toLowerCase(),

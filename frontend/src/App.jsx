@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import { AuthContextProvider } from './context/AuthContext';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:8080');
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 function App() {
     const [notifications, setNotifications] = useState([]);
@@ -38,6 +38,7 @@ function App() {
             socket.off('newNotification');
         };
     }, [user]);
+
 
     return (
     <QueryClientProvider client={queryClient}>

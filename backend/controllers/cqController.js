@@ -17,7 +17,12 @@ exports.getControlRequests = async (req, res) => {
           model: User,
           as: "assignedCQUsers", // Use the alias from your association
           where: { id: cqUserId }, // Filter by logged-in CQ user
-          attributes: [], // We only care about the control request data
+          attributes: [],
+        },
+        {
+          model: User,
+          as: "requester", // Use the alias from the association you just added
+          attributes: ["id", "username"], // Fetching id and username of the requester
         },
       ],
     });

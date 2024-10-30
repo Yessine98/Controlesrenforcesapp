@@ -2,16 +2,16 @@
 const express = require("express");
 require("dotenv").config();
 const http = require("http");
-const {initSocket} = require("./socket")
+const { initSocket } = require("./socket");
 const cors = require("cors");
 const db = require("./models");
 
 const userRoutes = require("./routes/userRoutes");
-const aqRoutes = require('./routes/aqRoutes');
-const cqRoutes = require('./routes/cqRoutes');
-const notificationRoutes = require('./routes/notificationRoutes');
-const managerRoutes = require('./routes/managerRoutes');
-const adminRoutes = require ('./routes/adminRoutes');
+const aqRoutes = require("./routes/aqRoutes");
+const cqRoutes = require("./routes/cqRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
+const managerRoutes = require("./routes/managerRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -33,22 +33,21 @@ app.use("/api/user", userRoutes);
 app.use("/api/aq", aqRoutes);
 app.use("/api/cq", cqRoutes);
 app.use("/api/notifications", notificationRoutes);
-app.use("/api/manager",managerRoutes);
-app.use("/api/admin",adminRoutes);
-
+app.use("/api/manager", managerRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Sync database
-db.sequelize.sync().then(() => {
-  console.log("Drop and Resync Db");
-}).catch((err) => {
-  console.log('Error: ' + err);
-});
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("Drop and Resync Db");
+  })
+  .catch((err) => {
+    console.log("Error: " + err);
+  });
 
 // Start the server
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
-

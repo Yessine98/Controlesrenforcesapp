@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card, Col, Row, Button, Modal, Form } from 'react-bootstrap';
 import useAssignedControls from '../hooks/useAssignedControls';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const AssignedControls = () => {
   const { assignedControls, loading, error, setAssignedControls } = useAssignedControls();
@@ -13,7 +15,7 @@ const AssignedControls = () => {
   const handleExecute = async (requestId) => {
     try {
       const token = localStorage.getItem('accessToken');
-      await axios.put(`http://localhost:8080/api/cq/control-requests/${requestId}/execute`, {}, {
+      await axios.put(`${apiUrl}/cq/control-requests/${requestId}/execute`, {}, {
         headers: {
           'x-access-token': token,
         },
@@ -24,7 +26,15 @@ const AssignedControls = () => {
     }
   };
 
-  const handleRefuse = async () => {
+  const handleRefuse = async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    // Check if both fields are filled
+    if (!justification || !requestMoreInfo) {
+      alert("Both fields are required!"); // You can customize this message
+      return; // Exit the function if validation fails
+    }
+
     try {
       const token = localStorage.getItem('accessToken');
       await axios.put(`http://localhost:8080/api/cq/control-requests/${currentRequestId}/refuse`, {
@@ -72,12 +82,13 @@ const AssignedControls = () => {
                 <Card.Body>
                   <Card.Title>{request.produit}</Card.Title>
                   <Card.Text>
-                    <strong>Numero:</strong> {request.numero} <br />
+                    <strong>Numéro:</strong> {request.numero} <br />
                     <strong>Code:</strong> {request.code} <br />
                     <strong>Lot:</strong> {request.lot} <br />
                     <strong>Secteur:</strong> {request.secteur} <br />
                     <strong>Control à faire:</strong> {request.controleAFaire} <br />
                     <strong>Délai d'exécution:</strong> {new Date(request.delaiExecution).toLocaleDateString()} <br />
+                    <strong>Assigné par:</strong> {request.requester ? request.requester.username : 'Inconnu'} <br />
                   </Card.Text>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '10px' }}>
                     <Button style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }} onClick={() => handleExecute(request.id)}>Exécuter</Button>
@@ -96,7 +107,7 @@ const AssignedControls = () => {
           <Modal.Title>Refuser la Demande de Contrôle</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleRefuse}> {/* Form submission handler */}
             <Form.Group controlId="justification">
               <Form.Label>Justification</Form.Label>
               <Form.Control 
@@ -104,6 +115,7 @@ const AssignedControls = () => {
                 rows={2} 
                 value={justification} 
                 onChange={(e) => setJustification(e.target.value)} 
+                required
               />
             </Form.Group>
             <Form.Group controlId="requestMoreInfo">
@@ -113,18 +125,19 @@ const AssignedControls = () => {
                 rows={3} 
                 value={requestMoreInfo} 
                 onChange={(e) => setRequestMoreInfo(e.target.value)} 
+                required
               />
             </Form.Group>
+            <Modal.Footer>
+              <Button onClick={() => setShowModal(false)} style={{ background: 'linear-gradient(to right,#9EAA9E,#263F26)' }}>
+                Annuler
+              </Button>
+              <Button type="submit" style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }}>
+                Soumettre le Refus
+              </Button>
+            </Modal.Footer>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setShowModal(false)} style={{ background: 'linear-gradient(to right,#9EAA9E,#263F26)' }}>
-            Annuler
-          </Button>
-          <Button onClick={handleRefuse} style={{ background: 'linear-gradient(to right,#263F26,#9EAA9E)' }}>
-            Soumettre le Refus
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

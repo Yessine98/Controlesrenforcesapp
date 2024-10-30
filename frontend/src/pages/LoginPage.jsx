@@ -13,7 +13,7 @@ const Login = () => {
   const { login, loading } = useLogin();
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
-  const socket = io('http://localhost:8080');
+  const socket = io(import.meta.env.VITE_SOCKET_URL);
 
   const handleLogin = async (event) => {
     event.preventDefault();

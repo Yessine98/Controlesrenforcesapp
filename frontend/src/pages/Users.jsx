@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Spinner, Alert } from 'react-bootstrap';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -12,7 +14,7 @@ const Users = () => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('accessToken'); // Assuming you are using token-based authentication
       try {
-        const response = await axios.get('http://localhost:8080/api/manager/users', {
+        const response = await axios.get(`${apiUrl}/manager/users`, {
           headers: {
             'x-access-token': token,
           },

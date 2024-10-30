@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const useFetchResults = () => {
   const [results, setResults] = useState([]);
@@ -9,11 +10,11 @@ const useFetchResults = () => {
   useEffect(() => {
     let isMounted = true; // Track if the component is mounted
     const fetchResults = async () => {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       try {
-        const response = await axios.get('http://localhost:8080/api/aq/completed-requests', {
+        const response = await axios.get(`${apiUrl}/aq/completed-requests`, {
           headers: {
-            'x-access-token': token,
+            "x-access-token": token,
           },
         });
         if (isMounted) {
@@ -21,7 +22,9 @@ const useFetchResults = () => {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.response ? err.response.data.message : 'Error fetching results');
+          setError(
+            err.response ? err.response.data.message : "Error fetching results"
+          );
         }
       } finally {
         if (isMounted) {

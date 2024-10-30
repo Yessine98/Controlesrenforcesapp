@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, Col, Row, Container, Button } from 'react-bootstrap';
 import useControlRequests from '../hooks/useControlRequests';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const PendingControlsAQ = () => {
   const { controlRequests, loading, error } = useControlRequests();
@@ -16,7 +18,7 @@ const PendingControlsAQ = () => {
     };
 
     try {
-      await axios.put(`http://localhost:8080/api/aq/controlRequest/cancel/${controlRequestId}`, null, { headers });
+      await axios.put(`${apiUrl}/aq/controlRequest/cancel/${controlRequestId}`, null, { headers });
       alert('Demande de contrôle annulée avec succès.');
       // Optionally refresh the list of requests or update the state
     } catch (error) {

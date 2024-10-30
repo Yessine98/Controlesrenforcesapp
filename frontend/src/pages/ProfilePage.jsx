@@ -3,8 +3,10 @@ import { Form, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import { io } from 'socket.io-client';
+const apiUrl = import.meta.env.VITE_API_URL;
 
-const socket = io('http://localhost:8080'); // Initialize socket connection
+
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 const ProfilePage = () => {
   const { dispatch } = useContext(AuthContext); // Get dispatch from AuthContext
@@ -20,7 +22,7 @@ const ProfilePage = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8080/api/user/profile', {
+        const response = await axios.get(`${apiUrl}/user/profile`, {
           headers: {
             'x-access-token': token,
           },
@@ -77,11 +79,11 @@ const ProfilePage = () => {
   return (
     <Container>
         <div className="d-flex justify-content-center">
-        <h2>Update profile</h2>
+        <h2>Mettre à jour le profil</h2>
         </div>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Nom et prénom</Form.Label>
           <Form.Control
             type="text"
             name="username"
@@ -92,7 +94,7 @@ const ProfilePage = () => {
         </Form.Group>
 
         <Form.Group controlId="currentPassword">
-          <Form.Label>Current Password (optional for username change)</Form.Label>
+          <Form.Label>Mot de passe actuel</Form.Label>
           <Form.Control
             type="password"
             name="currentPassword"
@@ -103,7 +105,7 @@ const ProfilePage = () => {
         </Form.Group>
 
         <Form.Group controlId="newPassword">
-          <Form.Label>New Password (optional)</Form.Label>
+          <Form.Label>Nouveau mot de passe</Form.Label>
           <Form.Control
             type="password"
             name="newPassword"
@@ -116,7 +118,7 @@ const ProfilePage = () => {
         <br />
         <div className='d-flex justify-content-center'>
         <Button style={{background:'linear-gradient(to right,#263F26,#9EAA9E)'}} type="submit">
-          Update Profile
+        Mettre à jour
         </Button>
         </div>
 

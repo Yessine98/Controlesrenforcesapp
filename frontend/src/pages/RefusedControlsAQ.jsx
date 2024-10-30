@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table ,Container} from 'react-bootstrap';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const RefusedControls = () => {
   const [refusedControls, setRefusedControls] = useState([]);
@@ -12,7 +14,7 @@ const RefusedControls = () => {
     const fetchRefusedControls = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8080/api/aq/controlRequest/refused', {
+        const response = await axios.get(`${apiUrl}/aq/controlRequest/refused`, {
           headers: {
             'x-access-token': token,
           },
