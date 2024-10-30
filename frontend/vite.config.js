@@ -1,10 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "dist", // Set the output directory for the build files
+    outDir: "dist",
   },
+  base: "/Controlesrenforcesapp/", // Add this line with your repo name
 });
