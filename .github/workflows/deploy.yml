@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Your main branch
+      - main  # Adjust if you're using a different default branch
 
 jobs:
   deploy:
@@ -16,18 +16,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Use your Node version
+          node-version: '16'  # Specify the version of Node.js you are using
 
       - name: Install dependencies
         run: npm install
-        working-directory: frontend
+        working-directory: frontend  # Ensure this points to your frontend directory
 
       - name: Build
         run: npm run build
-        working-directory: frontend
+        working-directory: frontend  # This should also point to your frontend directory
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: frontend/dist
+          publish_dir: frontend/dist  # This must point to the output directory
+          publish_branch: gh-pages
