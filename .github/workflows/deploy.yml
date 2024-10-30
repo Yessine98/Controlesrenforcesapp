@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Adjust if necessary
+      - main  # or whatever branch you're using
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Use the required Node.js version
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -31,6 +31,6 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.PAT }}  # Use the PAT here
+          github_token: ${{ secrets.PAT }}  # Ensure this matches your secret name
           publish_dir: frontend/dist
           publish_branch: gh-pages
