@@ -3,12 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Adjust this if your main branch is named differently
+      - main  # Adjust this to your default branch if it's different
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,21 +15,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Use your required Node.js version
+          node-version: '16'  # Specify your Node.js version
 
       - name: Install dependencies
-        run: |
-          cd frontend
-          npm install  # or yarn install
+        run: npm install
+        working-directory: frontend  # Adjust if necessary
 
-      - name: Build the project
-        run: |
-          cd frontend
-          npm run build  # or yarn build
+      - name: Build
+        run: npm run build
+        working-directory: frontend  # Adjust if necessary
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/dist  # The directory containing your built files
-          publish_branch: gh-pages  # Specify your deployment branch
+          publish_dir: frontend/dist  # Adjust to your build output directory
