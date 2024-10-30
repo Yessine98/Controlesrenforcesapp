@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Change this if your main branch is named differently
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # or '16' if you want to revert
+          node-version: '20'  # or '16' if you want to revert
 
       - name: Install dependencies
         run: |
