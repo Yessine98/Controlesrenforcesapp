@@ -8,7 +8,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import AppNavbar from './components/AppNavbar';
 import LoggedInNavbar from './components/LoggedInNavbar';
 import Footer from './components/Footer';
-import { AuthContextProvider } from './context/AuthContext';
 import { io } from 'socket.io-client';
 
 const socket = io(import.meta.env.VITE_SOCKET_URL);
@@ -42,8 +41,7 @@ function App() {
 
     return (
     <QueryClientProvider client={queryClient}>
-        <AuthContextProvider>
-            <BrowserRouter>
+            <BrowserRouter basename="/Controlesrenforcesapp">
                 <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                     <AppNavbar />
                     <LoggedInNavbar 
@@ -59,7 +57,6 @@ function App() {
                 </div>
                 <ReactQueryDevtools />
             </BrowserRouter>
-        </AuthContextProvider>
     </QueryClientProvider>
 );
 }

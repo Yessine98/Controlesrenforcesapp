@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, NavDropdown, Modal } from 'react-bootstrap';
 import NotificationList from './NotificationList';
-import ProfilePage from '../pages/ProfilePage';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 import { useNavigate,Link } from 'react-router-dom';

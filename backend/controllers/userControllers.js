@@ -5,6 +5,8 @@ const User = db.user;
 
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
+const { createNotification } = require("../utils/notificationUtils"); // Adjust the path based on your project structure
+const { getOnlineUsers, getSocketInstance } = require("../socket");
 
 exports.signup = (req, res) => {
   // Normalize email to lowercase
@@ -138,43 +140,55 @@ exports.updateUserProfile = async (req, res) => {
 };
 
 exports.forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.body; // Get email from request body
 
   try {
-    // Check if the user exists
+    // Check if the user with the given email exists
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).send({ message: "User not found." });
     }
 
-    // Notify admin about the password reset request
-    // Example of sending an email to the admin (adjust as needed)
-    const adminEmail = process.env.ADMIN_EMAIL; // Admin email from env variable
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    // Fetch all admin users
+    const adminUsers = await User.findAll({ where: { role: "admin" } });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: adminEmail,
-      subject: "Password Reset Request Notification",
-      html: `<p>The user with email <strong>${email}</strong> has requested to reset their password.</p>`,
-    };
+    const io = getSocketInstance();
+    const onlineUsers = getOnlineUsers();
 
-    await transporter.sendMail(mailOptions);
+    // Create a notification for each admin user
+    for (const admin of adminUsers) {
+      const notification = await createNotification({
+        recipientId: admin.id,
+        type: "password_reset_request",
+        message: `L'utilisateur avec l'email ${email} a demandé à réinitialiser son mot de passe.`,
+        controlId: null, // No controlId is applicable here
+      });
 
-    // Send response to the user
-    res.status(200).json({
-      message:
-        "A notification has been sent to the admin. For further help, please contact the admin on Teams.",
+      console.log(`Notification created for admin ${admin.id}:`, notification);
+
+      if (notification) {
+        // Emit notification to the admin if they are online
+        if (onlineUsers[admin.id]) {
+          console.log(`Emitting notification to admin ${admin.id}`);
+          io.to(onlineUsers[admin.id]).emit("newNotification", {
+            ...notification.dataValues, // Spread the notification data
+            createdAt: new Date(),
+            read: false, // Assuming it's unread initially
+          });
+        } else {
+          console.warn(`Admin ID ${admin.id} not found in onlineUsers.`);
+        }
+      } else {
+        console.error(`Failed to create notification for admin ${admin.id}`);
+      }
+    }
+
+    // Respond to the user
+    res.status(200).send({
+      message: "Password reset request processed. The admin has been notified.",
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error processing request", error: error.message });
+    console.error("Error in forgotPassword:", error);
+    res.status(500).send({ message: error.message });
   }
 };

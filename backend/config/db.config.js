@@ -4,5 +4,5 @@ module.exports = {
   PASSWORD: process.env.DB_PASSWORD || "adminadmin",
   DB: process.env.DB_NAME || "quality_control_app",
   dialect: "postgres",
-  port: parseInt(process.env.DB_PORT) || 5432, // Ensure this is an integer
+  port: parseInt(process.env.DB_PORT) || 5432,
 };
